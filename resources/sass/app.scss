@@ -1,0 +1,24 @@
+@import './base/bootstrap';
+@import './base/bootstrap-extended';
+@import './base/colors';
+@import './base/components';
+@import './base/core/menu/menu-types/vertical-menu.scss';
+@import './base/themes/dark-layout.scss';
+@import "./base/pages/app-chat.scss";
+
+
+::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: red;
+    border-radius: 15px;
+}
