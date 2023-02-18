@@ -58,7 +58,8 @@ const doWOrk = () =>{
 }
 const options = {
     chart: {
-        type: 'line'
+        type: 'line',
+        toolbar: { show: false }
     },
     series: [{
         name: 'sales',

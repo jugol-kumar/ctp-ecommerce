@@ -49,11 +49,16 @@ createInertiaApp({
             .component(VueFeather.name, VueFeather)
             .mount(el);
     },
+    progress: {
+        color: '#29d',
+        showSpinner: true,
+    },
+    // ...
 }).then(r => {});
 
 
-
-InertiaProgress.init({
-  color: "red",
-  showSpinner: true,
-});
+//
+// InertiaProgress.init({
+//   color: "red",
+//   showSpinner: true,
+// });

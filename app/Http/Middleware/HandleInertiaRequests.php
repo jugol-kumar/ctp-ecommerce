@@ -41,7 +41,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => Auth::check() ? [
                 'user' => Auth::user(),
                 'MAIN_URL' => config('app.url'),
-                'ADMIN_URL' => config('app.url')
+                'ADMIN_URL' => config('app.url')."/panel"
             ] : ['MAIN_URL' => config('app.url')]
         ]);
     }
