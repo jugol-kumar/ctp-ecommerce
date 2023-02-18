@@ -105,11 +105,6 @@
     </div>
 </template>
 
-<script>
-    // export default {
-    //     layout:"Layout"
-    // };
-</script>
 
 <script setup>
 
