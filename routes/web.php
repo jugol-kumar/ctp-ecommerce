@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardContrtoller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -17,15 +18,26 @@ use App\Http\Controllers\Auth\LoginController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::middleware('guest')->group(function (){
+    Route::get('login', [LoginController::class, 'login'])->name('login');
+    Route::post('login', [LoginController::class, 'authenticate']);
+    Route::post('logout', [LoginController::class, 'destroy'])->middleware('auth');
 
+});
 
 
 // admin routes
-Route::prefix('panel')->name('admin')->middleware(['auth','web'])->group(function(){
-    Route::get('/dashboard', function () {
-        return inertia('Dashboard');
-    });
+Route::prefix('panel')->name('admin.')->middleware(['auth','web'])->group(function(){
+    Route::get('dashboard', DashboardContrtoller::class)->name('dashboard');
 });
+
+
+Route::fallback(function (){
+   return [
+       "action" => "Invalid route actions"
+   ] ;
+});
+
 
 
 Route::get('/chart', function () {
@@ -35,7 +47,3 @@ Route::get('/chart', function () {
 Route::get('/chat', function (){
     return "chat page";
 });
-
-Route::get('login', [LoginController::class, 'login'])->name('login');
-Route::post('login', [LoginController::class, 'authenticate']);
-Route::post('logout', [LoginController::class, 'destroy'])->middleware('auth');
