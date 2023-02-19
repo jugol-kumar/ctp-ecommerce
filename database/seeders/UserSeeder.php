@@ -24,16 +24,23 @@ class UserSeeder extends Seeder
         User::factory()
             ->count(100)
             ->hasCustomer(1)
+            ->hasAddresses(5)
             ->create();
 
         User::factory()
             ->count(50)
+            ->hasAddresses(7)
             ->create();
 
         User::factory()
             ->count(100)
             ->hasCustomer(1)
+            ->hasAddresses(3)
             ->create();
 
+        User::factory()
+            ->count(10)
+            ->hasCustomer(1)
+            ->create();
     }
 }

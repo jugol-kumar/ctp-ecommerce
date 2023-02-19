@@ -17,17 +17,19 @@ class DatabaseSeeder extends Seeder
     {
 
 
-//        $cities = public_path('sql/countries.sql');
-//        $sql = file_get_contents($cities);
-//        DB::unprepared($sql);
-//
-//        $cities = public_path('sql/states.sql');
-//        $sql = file_get_contents($cities);
-//        DB::unprepared($sql);
-//
+        $cities = public_path('sql/countries.sql');
+        $sql = file_get_contents($cities);
+        DB::unprepared($sql);
+
+        $cities = public_path('sql/states.sql');
+        $sql = file_get_contents($cities);
+        DB::unprepared($sql);
+
 //        $cities = public_path('sql/cities.sql');
 //        $sql = file_get_contents($cities);
 //        DB::unprepared($sql);
+
+
 
          $this->call([UserSeeder::class]);
     }
