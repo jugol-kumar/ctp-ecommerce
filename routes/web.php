@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\DashboardContrtoller;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Panel\DashboardController;
+use App\Http\Controllers\Panel\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -29,7 +29,7 @@ Route::middleware('guest')->group(function (){
 
 // admin routes
 Route::prefix('panel')->name('admin.')->middleware(['auth','web'])->group(function(){
-    Route::get('dashboard', DashboardContrtoller::class)->name('dashboard');
+    Route::get('dashboard', DashboardController::class)->name('dashboard');
 
 
     // test products
