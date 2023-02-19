@@ -57,7 +57,19 @@
                             <li>
                                 <Link preserve-scroll class="d-flex align-items-center" href="#">
                                     <vue-feather type="circle" />
-                                    <span class="menu-item text-truncate" data-i18n="Login">Manage user</span>
+                                    <span class="menu-item text-truncate" data-i18n="Login">Manage Stuff</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link preserve-scroll class="d-flex align-items-center" href="#">
+                                    <vue-feather type="circle" />
+                                    <span class="menu-item text-truncate" data-i18n="Login">Manage Customer</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link preserve-scroll class="d-flex align-items-center" href="#">
+                                    <vue-feather type="circle" />
+                                    <span class="menu-item text-truncate" data-i18n="Login">Manage Subscribers</span>
                                 </Link>
                             </li>
                         </ul>
@@ -74,13 +86,13 @@
                             <li>
                                 <Link preserve-scroll class="d-flex align-items-center" href="#">
                                     <vue-feather type="circle" />
-                                    <span class="menu-item text-truncate" data-i18n="Login">Role & Permissions</span>
+                                    <span class="menu-item text-truncate" data-i18n="Login">Products</span>
                                 </Link>
                             </li>
                             <li>
                                 <Link preserve-scroll class="d-flex align-items-center" href="#">
                                     <vue-feather type="circle" />
-                                    <span class="menu-item text-truncate" data-i18n="Login">Manage user</span>
+                                    <span class="menu-item text-truncate" data-i18n="Login">Category</span>
                                 </Link>
                             </li>
                         </ul>
