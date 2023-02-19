@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,15 +15,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(10)->create();
 
-         \App\Models\User::factory()->create([
-             'name' => 'Test User',
-             'email' => 'test@example.com',
-         ]);
+
+//        $cities = public_path('sql/countries.sql');
+//        $sql = file_get_contents($cities);
+//        DB::unprepared($sql);
+//
+//        $cities = public_path('sql/states.sql');
+//        $sql = file_get_contents($cities);
+//        DB::unprepared($sql);
+//
+//        $cities = public_path('sql/cities.sql');
+//        $sql = file_get_contents($cities);
+//        DB::unprepared($sql);
 
          $this->call([UserSeeder::class]);
-
-//         UserSeeder::class;
     }
 }
