@@ -184,7 +184,11 @@ return [
 
         /*
          * Package Service Providers...
+         *
+         *
          */
+
+        \JugolKumar\CategoryCurd\CategoryCrudServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -210,6 +214,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'UniqueSlugs' => \JugolKumar\CategoryCurd\Facades\CategoryCrudFacade::class
     ])->toArray(),
 
 ];

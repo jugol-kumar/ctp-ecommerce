@@ -4,6 +4,7 @@ use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use JugolKumar\CategoryCurd\Facades\CategoryCrudFacade;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,14 @@ use App\Http\Controllers\Auth\LoginController;
 */
 
 Route::get('/', function () {
+
+//    \App\Models\User::create([
+//        'name' => "jugol-kumar-3",
+//        'email' => "jkh@jkj.com",
+//        'password' => "12345789"
+//    ]);
+
+    return CategoryCrudFacade::generate(\App\Models\User::class, 'jugol-kumar','name');
     return view('welcome');
 });
 Route::middleware('guest')->group(function (){
