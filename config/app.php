@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => env('TIME_ZONE','UTC'),
 
     /*
     |--------------------------------------------------------------------------
@@ -188,7 +188,6 @@ return [
          *
          */
 
-        \JugolKumar\CategoryCurd\CategoryCrudServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -214,7 +213,6 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
-        'UniqueSlugs' => \JugolKumar\CategoryCurd\Facades\CategoryCrudFacade::class
     ])->toArray(),
 
 ];
