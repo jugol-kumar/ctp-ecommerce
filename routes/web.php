@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Panel\CategoryController;
 use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -18,16 +19,9 @@ use JugolKumar\CategoryCurd\Facades\CategoryCrudFacade;
 */
 
 Route::get('/', function () {
-
-//    \App\Models\User::create([
-//        'name' => "jugol-kumar-3",
-//        'email' => "jkh@jkj.com",
-//        'password' => "12345789"
-//    ]);
-
-    return CategoryCrudFacade::generate(\App\Models\User::class, 'jugol-kumar','name');
     return view('welcome');
 });
+
 Route::middleware('guest')->group(function (){
     Route::get('login', [LoginController::class, 'login'])->name('login');
     Route::post('login', [LoginController::class, 'authenticate']);
@@ -40,6 +34,8 @@ Route::middleware('guest')->group(function (){
 Route::prefix('panel')->name('admin.')->middleware(['auth','web'])->group(function(){
     Route::get('dashboard', DashboardController::class)->name('dashboard');
 
+    // categories
+    Route::resource('category', CategoryController::class);
 
     // test products
     Route::get('products', [ProductController::class, 'index'])->name('index');

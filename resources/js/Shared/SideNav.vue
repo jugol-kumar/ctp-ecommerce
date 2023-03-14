@@ -19,7 +19,7 @@
                                                        href="#">
                             <span class="brand-logo">
                             </span>
-                        <h2 class="brand-text">CTP BD CRM</h2>
+                        <h2 class="brand-text">Hat Bazar</h2>
                     </Link></li>
                     <li class="nav-item nav-toggle">
                         <Link preserve-scroll class="nav-link modern-nav-toggle">
@@ -84,13 +84,13 @@
                         </a>
                         <ul class="menu-content">
                             <li>
-                                <Link preserve-scroll class="d-flex align-items-center" href="#">
+                                <Link preserve-scroll class="d-flex align-items-center" :href="`${this.$page.props.auth.ADMIN_URL}/products`">
                                     <vue-feather type="circle" />
                                     <span class="menu-item text-truncate" data-i18n="Login">Products</span>
                                 </Link>
                             </li>
                             <li>
-                                <Link preserve-scroll class="d-flex align-items-center" href="#">
+                                <Link preserve-scroll class="d-flex align-items-center" :href="`${this.$page.props.auth.ADMIN_URL}/category`">
                                     <vue-feather type="circle" />
                                     <span class="menu-item text-truncate" data-i18n="Login">Category</span>
                                 </Link>
