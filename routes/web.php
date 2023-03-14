@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Panel\CategoryController;
 use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use JugolKumar\CategoryCurd\Facades\CategoryCrudFacade;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +21,7 @@ use App\Http\Controllers\Auth\LoginController;
 Route::get('/', function () {
     return view('welcome');
 });
+
 Route::middleware('guest')->group(function (){
     Route::get('login', [LoginController::class, 'login'])->name('login');
     Route::post('login', [LoginController::class, 'authenticate']);
@@ -31,6 +34,8 @@ Route::middleware('guest')->group(function (){
 Route::prefix('panel')->name('admin.')->middleware(['auth','web'])->group(function(){
     Route::get('dashboard', DashboardController::class)->name('dashboard');
 
+    // categories
+    Route::resource('category', CategoryController::class);
 
     // test products
     Route::get('products', [ProductController::class, 'index'])->name('index');
