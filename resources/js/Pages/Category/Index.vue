@@ -4,13 +4,19 @@ import {useForm} from "@inertiajs/inertia-vue3";
 import debounce from "lodash/debounce";
 import {computed, ref, watch} from 'vue';
 import Offcanvas from "../../components/Offcanvas.vue";
+import {Inertia} from "@inertiajs/inertia";
+import {useSlug} from '../../Composables/useSlug.js'
+
+const slug = useSlug();
+
 
 const props = defineProps({
     info: Object,
     filters:Object,
 });
+
 const createForm = useForm({
-    title: "",
+    title: null,
     payment_id:null,
     pay_amount:null,
     discount:null,
@@ -25,20 +31,21 @@ watch([search, perPage], debounce(function ([val, val2]) {
 
 
 
-const slug = computed(() =>{
-    const a = 'àáäâèéëêìíïîòóöôùúüûñçßÿỳýœæŕśńṕẃǵǹḿǘẍźḧ'
-    const b = 'aaaaeeeeiiiioooouuuuncsyyyoarsnpwgnmuxzh'
-    const p = new RegExp(a.split('').join('|'), 'g')
-    const ampersand = 'and'
-    return createForm.title.toString().toLowerCase()
-        .replace(/[\s_]+/g, '-')
-        .replace(p, c =>
-            b.charAt(a.indexOf(c)))
-        .replace(/&/g, `-${ampersand}-`)
-        .replace(/[^\w-]+/g, '')
-        .replace(/--+/g, '-')
-        .replace(/^-+|-+$/g, '')
-})
+
+// const slug = computed(() =>{
+//     const a = 'àáäâèéëêìíïîòóöôùúüûñçßÿỳýœæŕśńṕẃǵǹḿǘẍźḧ'
+//     const b = 'aaaaeeeeiiiioooouuuuncsyyyoarsnpwgnmuxzh'
+//     const p = new RegExp(a.split('').join('|'), 'g')
+//     const ampersand = 'and'
+//     return createForm.title.toString().toLowerCase()
+//         .replace(/[\s_]+/g, '-')
+//         .replace(p, c =>
+//             b.charAt(a.indexOf(c)))
+//         .replace(/&/g, `-${ampersand}-`)
+//         .replace(/[^\w-]+/g, '')
+//         .replace(/--+/g, '-')
+//         .replace(/^-+|-+$/g, '')
+// })
 
 
 
@@ -110,6 +117,7 @@ const slug = computed(() =>{
                     <label class="form-label" for="amount">Title</label>
                     <input class="form-control"
                            v-model="createForm.title"
+                           @input="slug(this.$event.target)"
                            type="text" placeholder="e.g latest faction"/>
                 </div>
                 <div class="mb-1">

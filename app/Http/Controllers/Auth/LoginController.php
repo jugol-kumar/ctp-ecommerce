@@ -22,8 +22,8 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
-            return redirect()->intended();
+            return redirect()->route('admin.dashboard');
+//            return redirect()->intended("/panel/dashboard");
         }
 
         return back()->withErrors([
@@ -34,7 +34,6 @@ class LoginController extends Controller
     public function destroy()
     {
         Auth::logout();
-
         return redirect()->route('login');
     }
 }
