@@ -2,27 +2,58 @@
 import layout from "../../Shared/Layout.vue";
 import {useForm} from "@inertiajs/inertia-vue3";
 import debounce from "lodash/debounce";
-import {computed, ref, watch} from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import Offcanvas from "../../components/Offcanvas.vue";
+import {Inertia} from "@inertiajs/inertia";
+import {useSlug} from '../../Composables/useSlug.js'
+import {Tooltip} from 'bootstrap'
+import ImageUploader from "../../components/ImageUploader.vue";
+import Swal from "sweetalert2";
+const slugTitle = useSlug();
 
 const props = defineProps({
-    info: Object,
-    filters:Object,
+    categories:[] | null,
+    main_url:String | null,
 });
+
+
 const createForm = useForm({
-    title: "",
-    payment_id:null,
-    pay_amount:null,
-    discount:null,
-    payment_note:null,
-})
-const search = ref(null);
-const perPage = ref(null);
+    title: null,
+    parent_id:null,
+    order_level:null,
+    icon:null,
+    banner:null,
+});
 
-watch([search, perPage], debounce(function ([val, val2]) {
-    Inertia.get(props.main_url, { search: val, perPage: val2 }, { preserveState: true, replace: true });
-}, 300));
+const isLoading = ref(false);
 
+const addItem = () =>{
+    createForm.post(props.main_url,{
+        preserveState: true,
+        replace: true,
+        onStart: res =>{
+            console.log("res "+ res)
+            isLoading.value = true;
+        },
+        onSuccess: page => {
+            isLoading.value = false;
+            createForm.reset();
+            document.getElementById('categoryCanvas').$vb.Offcanvas.hide();
+            $sToast.fire({
+                icon: 'success',
+                title: 'Signed in successfully'
+            })
+        },
+        onError: errors => {
+            console.log(errors)
+            $sToast.fire({
+                icon: 'success',
+                title: 'Signed in successfully'
+            });
+        }
+
+    });
+}
 
 
 const slug = computed(() =>{
@@ -30,18 +61,30 @@ const slug = computed(() =>{
     const b = 'aaaaeeeeiiiioooouuuuncsyyyoarsnpwgnmuxzh'
     const p = new RegExp(a.split('').join('|'), 'g')
     const ampersand = 'and'
-    return createForm.title.toString().toLowerCase()
-        .replace(/[\s_]+/g, '-')
-        .replace(p, c =>
-            b.charAt(a.indexOf(c)))
-        .replace(/&/g, `-${ampersand}-`)
-        .replace(/[^\w-]+/g, '')
-        .replace(/--+/g, '-')
-        .replace(/^-+|-+$/g, '')
+    if (createForm.title != null){
+        return createForm.title.toString().toLowerCase()
+            .replace(/[\s_]+/g, '-')
+            .replace(p, c =>
+                b.charAt(a.indexOf(c)))
+            .replace(/&/g, `-${ampersand}-`)
+            .replace(/[^\w-]+/g, '')
+            .replace(/--+/g, '-')
+            .replace(/^-+|-+$/g, '')
+    }
 })
 
 
 
+
+
+
+
+const search = ref(null);
+const perPage = ref(null);
+
+watch([search, perPage], debounce(function ([val, val2]) {
+    Inertia.get(props.main_url, { search: val, perPage: val2 }, { preserveState: true, replace: true });
+}, 300));
 
 </script>
 
@@ -103,41 +146,61 @@ const slug = computed(() =>{
                 </div>
             </div>
         </section>
-
-        <Offcanvas title="Add Category" id="categoryCanvas">
-            <form @submit.prevent="addPayment">
+        <Offcanvas title="Add Category" id="categoryCanvas"  v-vb-is:Offcanvas>
+            <form @submit.prevent="addItem">
                 <div class="mb-1">
-                    <label class="form-label" for="amount">Title</label>
+                    <label class="form-label">Title</label>
                     <input class="form-control"
-                           v-model="createForm.title"
+                            v-model="createForm.title"
                            type="text" placeholder="e.g latest faction"/>
                 </div>
+<!--
                 <div class="mb-1">
-                    <label>Slug:</label>
-                    <input :value="slug" type="text" class="form-control" disabled>
+                    <label>Slug</label>
+                    <input v-model="createForm.slug" type="text" class="form-control" disabled>
+                </div>
+-->
+
+                <div class="mb-1">
+                    <div class="d-flex align-baseline">
+                        <label>Parent Category</label> <info title="If you want to add this category as a child then select an parent category"/>
+                    </div>
+                    <vSelect :options="props.categories" v-model="createForm.parent_id" label="title" :redius="category => category.id" placeholder="Select Me As Parent"/>
                 </div>
 
                 <div class="mb-1">
-                    <label class="form-label" for="amount">Payment Amount</label>
-                    <input id="amount" class="form-control"
-                           v-model="createForm.pay_amount"
-                           type="number" placeholder="Enter Payment Amount"/>
+                    <label>Category Type</label>
+                    <select class="form-control form-select">
+                        <option disabled selected>Select Category Type</option>
+                        <option value="physical">Physical</option>
+                        <option value="digital">Digital</option>
+                    </select>
                 </div>
 
                 <div class="mb-1">
-                    <label class="form-label" for="payment-note">Internal Payment Note</label>
-                    <textarea class="form-control" id="payment-note"
-                              v-model="createForm.payment_note" rows="5"
-                              placeholder="Internal Payment Note"></textarea>
+                    <label>Order Number</label> <info title="Low number order level coming first"/>
+                    <input type="number" v-model="createForm.order_level" class="form-control" placeholder="Low Number Height Priority">
+                </div>
+
+                <div class="mb-1">
+                    <label>Icon Image</label> <info title="Low number order level coming first"/>
+                    <ImageUploader v-model="createForm.icon" />
+                </div>
+
+                <div class="mb-1">
+                    <label>Banner Image</label> <info title="Low number order level coming first"/>
+                    <ImageUploader v-model="createForm.banner" />
                 </div>
 
                 <div class="d-flex flex-wrap mb-0">
-                    <button type="submit" class="btn btn-primary me-1" data-bs-dismiss="modal">Submit</button>
-                    <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                    <button v-if="!isLoading" type="submit" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+                    <button v-else class="btn btn-primary" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Loading...
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary ms-1">Cancel</button>
                 </div>
             </form>
         </Offcanvas>
-
-
     </layout>
 </template>

@@ -8,7 +8,24 @@ import { createVbPlugin } from 'vue3-plugin-bootstrap5'
 import { Alert, Button, Carousel, Collapse, Dropdown, Modal, Offcanvas, Popover, ScrollSpy, Tab, Toast, Tooltip } from 'bootstrap'
 import {resolvePageComponent} from "laravel-vite-plugin/inertia-helpers";
 // import('../sass/app.scss')
-let vbPlugin = createVbPlugin({ Alert, Button, Carousel, Collapse, Dropdown, Modal, Offcanvas, Popover, ScrollSpy, Tab, Toast, Tooltip  })
+let vbPlugin = createVbPlugin({ Alert, Button, Carousel, Collapse, Dropdown, Modal, Offcanvas, Popover, ScrollSpy, Tab, Toast, Tooltip})
+
+
+
+
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
+import coreUi from '@coreui/vue'
+import {vctooltip} from "@coreui/vue";
+import suggest from "./components/Sujesation.vue";
+
+// import here this js file and export an name form there and import here.
+import "./plugins.js"
+import VueNotificationList from "./plugins.js"
+
+
+
+
 
 // createInertiaApp({
 //   resolve: name => {
@@ -36,6 +53,7 @@ let vbPlugin = createVbPlugin({ Alert, Button, Carousel, Collapse, Dropdown, Mod
 
 
 
+
 createInertiaApp({
     title: (title) => `My App - ${title}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
@@ -43,10 +61,15 @@ createInertiaApp({
         return createApp({render: () => h(app, props)})
             .use(plugin)
             .use(vbPlugin)
+            .use(coreUi)
             .use(store)
+            .use(VueNotificationList)
+            .directive('tooltip', vctooltip)
             .component("Link", Link)
             .component("Head", Head)
+            .component('info', suggest)
             .component(VueFeather.name, VueFeather)
+            .component("vSelect", vSelect)
             .mount(el);
     },
     progress: {
