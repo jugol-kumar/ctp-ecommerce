@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 
 class CategoryController extends Controller
 {
@@ -15,7 +16,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return inertia('Category/Index');
+        return inertia('Category/Index', [
+            'categories' => Category::whereNull('parent_id')->get(),
+            'main_url' => URL::route('admin.category.index')
+        ]);
     }
 
     /**

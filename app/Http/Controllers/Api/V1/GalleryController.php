@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class GalleryController extends Controller
 {
@@ -115,6 +116,7 @@ class GalleryController extends Controller
                         $img = Image::make($request->file('aiz_file')->getRealPath())->encode();
                         $height = $img->height();
                         $width = $img->width();
+
                         if($width > $height && $width > 1500){
                             $img->resize(1500, null, function ($constraint) {
                                 $constraint->aspectRatio();
@@ -127,6 +129,8 @@ class GalleryController extends Controller
                         $img->save(base_path('public/').$path);
                         clearstatcache();
                         $size = $img->filesize();
+
+
 
                         if (env('FILESYSTEM_DRIVER') == 's3') {
                             Storage::disk('s3')->put($path, file_get_contents(base_path('public/').$path));

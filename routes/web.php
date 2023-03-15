@@ -5,7 +5,6 @@ use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
-use JugolKumar\CategoryCurd\Facades\CategoryCrudFacade;
 
 /*
 |--------------------------------------------------------------------------
