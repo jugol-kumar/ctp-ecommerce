@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 
 class CategoryController extends Controller
@@ -35,12 +37,19 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreCategoryRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request): \Illuminate\Http\RedirectResponse
     {
-        //
+        $data = $request->all();
+
+        // we upload our image after saving this category
+        $data['icon'] = null;
+        $data['banner'] = null;
+        Category::create($data);
+        return back();
+//        return Response::json(['message' => 'Your Category Successfully Added.'], 200);
     }
 
     /**

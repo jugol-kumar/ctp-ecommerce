@@ -8,12 +8,14 @@ import {Inertia} from "@inertiajs/inertia";
 import {useSlug} from '../../Composables/useSlug.js'
 import {Tooltip} from 'bootstrap'
 import ImageUploader from "../../components/ImageUploader.vue";
+import Swal from "sweetalert2";
 const slugTitle = useSlug();
 
 const props = defineProps({
     categories:[] | null,
     main_url:String | null,
 });
+
 
 const createForm = useForm({
     title: null,
@@ -25,9 +27,33 @@ const createForm = useForm({
 
 const isLoading = ref(false);
 
-createForm.post(props.main_url,{
+const addItem = () =>{
+    createForm.post(props.main_url,{
+        preserveState: true,
+        replace: true,
+        onStart: res =>{
+            console.log("res "+ res)
+            isLoading.value = true;
+        },
+        onSuccess: page => {
+            isLoading.value = false;
+            createForm.reset();
+            document.getElementById('categoryCanvas').$vb.Offcanvas.hide();
+            $sToast.fire({
+                icon: 'success',
+                title: 'Signed in successfully'
+            })
+        },
+        onError: errors => {
+            console.log(errors)
+            $sToast.fire({
+                icon: 'success',
+                title: 'Signed in successfully'
+            });
+        }
 
-});
+    });
+}
 
 
 const slug = computed(() =>{
@@ -120,8 +146,8 @@ watch([search, perPage], debounce(function ([val, val2]) {
                 </div>
             </div>
         </section>
-        <Offcanvas title="Add Category" id="categoryCanvas">
-            <form @submit.prevent="addPayment">
+        <Offcanvas title="Add Category" id="categoryCanvas"  v-vb-is:Offcanvas>
+            <form @submit.prevent="addItem">
                 <div class="mb-1">
                     <label class="form-label">Title</label>
                     <input class="form-control"
@@ -143,7 +169,7 @@ watch([search, perPage], debounce(function ([val, val2]) {
                 </div>
 
                 <div class="mb-1">
-                    <label>Slug</label>
+                    <label>Category Type</label>
                     <select class="form-control form-select">
                         <option disabled selected>Select Category Type</option>
                         <option value="physical">Physical</option>

@@ -10,11 +10,21 @@ import {resolvePageComponent} from "laravel-vite-plugin/inertia-helpers";
 // import('../sass/app.scss')
 let vbPlugin = createVbPlugin({ Alert, Button, Carousel, Collapse, Dropdown, Modal, Offcanvas, Popover, ScrollSpy, Tab, Toast, Tooltip})
 
+
+
+
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
 import coreUi from '@coreui/vue'
 import {vctooltip} from "@coreui/vue";
-import sujest from "./components/Sujesation.vue";
+import suggest from "./components/Sujesation.vue";
+
+// import here this js file and export an name form there and import here.
+import "./plugins.js"
+import VueNotificationList from "./plugins.js"
+
+
+
 
 
 // createInertiaApp({
@@ -52,11 +62,12 @@ createInertiaApp({
             .use(plugin)
             .use(vbPlugin)
             .use(coreUi)
-            .directive('tooltip', vctooltip)
             .use(store)
+            .use(VueNotificationList)
+            .directive('tooltip', vctooltip)
             .component("Link", Link)
             .component("Head", Head)
-            .component('info', sujest)
+            .component('info', suggest)
             .component(VueFeather.name, VueFeather)
             .component("vSelect", vSelect)
             .mount(el);
