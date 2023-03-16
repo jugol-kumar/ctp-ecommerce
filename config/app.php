@@ -57,7 +57,7 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL'),
-
+    'date_format' => env('DATE_FORMAT', 'd M Y'),
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

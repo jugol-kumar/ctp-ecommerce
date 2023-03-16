@@ -14,6 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
+
             $table->id();
             $table->string('title')->unique();
             $table->string('slug')->unique();
@@ -28,7 +29,7 @@ return new class extends Migration
             $table->string('banner')->nullable();
             $table->boolean('featured')->default(false)->comment('0 = false, 1 = true');
             $table->boolean('top')->default(false)->comment('0 = false, 1 = true');
-            $table->boolean('digital')->default(false)->comment('0 = false, 1 = true');
+            $table->string('type')->default('physical');//->comment('0 = false, 1 = true');
             $table->integer('order_level')->default(0)->comment('low number high priority');
             $table->integer('level')->default(0);
             $table->enum('status', ['published', 'cancel', 'pending', 'deleted'])->default('pending');
