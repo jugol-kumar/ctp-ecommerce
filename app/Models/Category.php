@@ -22,6 +22,7 @@ class Category extends Model
         'parent_id',
         'summery',
         'icon',
+        'banner',
         'featured',
         'top',
         'digital',
@@ -40,6 +41,15 @@ class Category extends Model
             ->saveSlugsTo('slug');
     }
 
+    public function childrens()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
 
 
 //    public function

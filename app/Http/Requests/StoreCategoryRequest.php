@@ -33,7 +33,7 @@ class StoreCategoryRequest extends FormRequest
             'banner' => ['nullable','string'],
             'featured' => ['boolean'],
             'top' => ['boolean'],
-            'digital' => ['boolean'],
+            'type' => ['string', Rule::in(['physical', 'digital'])],
             'order_level' => ['integer'],
             'status' => ['string', Rule::in(['published', 'cancel', 'pending', 'deleted'])],
         ];
