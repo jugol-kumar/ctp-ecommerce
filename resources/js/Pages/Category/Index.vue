@@ -12,7 +12,10 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import {Offcanvas} from 'bootstrap';
 import Pagination from "../../components/Pagination.vue";
+import {useAction} from '../../Composables/useAction.js';
 
+
+const action = useAction();
 
 const slugTitle = useSlug();
 
@@ -33,9 +36,17 @@ let createForm = useForm({
     banner:null,
 });
 
+let updateForm = useForm({
+    title: null,
+    parent_id:null,
+    order_level:null,
+    type:null,
+    icon:null,
+    banner:null,
+});
+
 const isLoading = ref(false);
 const isShow = ref(null);
-const showData = ref(Object | null);
 
 const addItem = () => {
     isShow.value = null;
@@ -65,36 +76,19 @@ const addItem = () => {
 const showItem = (id, type) =>{
     isShow.value = null;
     axios.get(`${props.main_url}/${id}`).then((res) =>{
-        createForm = res.data
-        if (type === 'show'){
-            isShow.value = true;
-        }
-        if (type === 'edit'){
-            isShow.value = false;
-        }
-        document.getElementById('addItemModal').$vb.modal.show()
+        updateForm.title = res.data.title;
+        updateForm.parent_id = res.data.parent_id;
+        updateForm.order_level = res.data.order_level;
+        updateForm.type = res.data.type;
+        updateForm.icon = res.data.icon;
+        updateForm.banner = res.data.banner;
+
+        document.getElementById('editItemModal').$vb.modal.show()
 
     }).catch((err) =>{
         $toast.error(err.message)
     })
 }
-
-const slug = computed(() =>{
-    const a = 'àáäâèéëêìíïîòóöôùúüûñçßÿỳýœæŕśńṕẃǵǹḿǘẍźḧ'
-    const b = 'aaaaeeeeiiiioooouuuuncsyyyoarsnpwgnmuxzh'
-    const p = new RegExp(a.split('').join('|'), 'g')
-    const ampersand = 'and'
-    if (createForm.title != null){
-        return createForm.title.toString().toLowerCase()
-            .replace(/[\s_]+/g, '-')
-            .replace(p, c =>
-                b.charAt(a.indexOf(c)))
-            .replace(/&/g, `-${ampersand}-`)
-            .replace(/[^\w-]+/g, '')
-            .replace(/--+/g, '-')
-            .replace(/^-+|-+$/g, '')
-    }
-})
 
 
 
@@ -176,7 +170,7 @@ watch([search, perPage], debounce(function ([val, val2]) {
                                 <span class="text-primary cursor-pointer"  @click="showItem(category.id, 'edit')">
                                     <vue-feather type="edit" size="15"/>
                                 </span>
-                                <span class="text-danger cursor-pointer ms-1"  @click="deleteItem(category.id)">
+                                <span class="text-danger cursor-pointer ms-1"  @click="action.deleteItem(props.main_url, category.id)">
                                     <vue-feather type="trash" size="15"/>
                                 </span>
                             </td>
@@ -211,7 +205,7 @@ watch([search, perPage], debounce(function ([val, val2]) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
                     <div class="modal-header mb-1">
                         <h5 class="modal-title">
-                            <span class="align-middle">{{ isShow ? showData.title : isShow === null ? 'Add new category' : 'Edit Category' }}</span>
+                            <span class="align-middle">Add new category</span>
                         </h5>
                     </div>
                     <div class="modal-body flex-grow-1">
@@ -219,17 +213,10 @@ watch([search, perPage], debounce(function ([val, val2]) {
                             <div class="mb-1">
                                 <label class="form-label">Title</label>
                                 <input class="form-control readonly"
-                                       :disabled="isShow"
                                        v-model="createForm.title"
                                        type="text" placeholder="e.g latest faction"/>
                                 <span class="text-danger" v-if="props.errors.title">{{ props.errors.title }}</span>
                             </div>
-                            <!--
-                                            <div class="mb-1">
-                                                <label>Slug</label>
-                                                <input v-model="createForm.slug" type="text" class="form-control" disabled>
-                                            </div>
-                            -->
                             <div class="mb-1">
                                 <div class="d-flex align-baseline">
                                     <label>Parent Category</label> <info title="If you want to add this category as a child then select an parent category"/>
@@ -279,6 +266,77 @@ watch([search, perPage], debounce(function ([val, val2]) {
                 </div>
             </div>
         </div>
+
+
+
+        <div class="modal modal-slide-in fade" id="editItemModal" aria-hidden="true" v-vb-is:modal>
+            <div class="modal-dialog">
+                <div class="modal-content p-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                    <div class="modal-header mb-1">
+                        <h5 class="modal-title">
+                            <span class="align-middle">Edit Category</span>
+                        </h5>
+                    </div>
+                    <div class="modal-body flex-grow-1">
+                        <form @submit.prevent="addItem">
+                            <div class="mb-1">
+                                <label class="form-label">Title</label>
+                                <input class="form-control readonly"
+                                       v-model="updateForm.title"
+                                       type="text" placeholder="e.g latest faction"/>
+                                <span class="text-danger" v-if="props.errors.title">{{ props.errors.title }}</span>
+                            </div>
+                            <div class="mb-1">
+                                <div class="d-flex align-baseline">
+                                    <label>Parent Category</label> <info title="If you want to add this category as a child then select an parent category"/>
+                                </div>
+                                <vSelect :options="props.parent_categories" v-model="updateForm.parent_id" label="title" :reduce="category => category.id" placeholder="Select Me As Parent"/>
+                                <span class="text-danger" v-if="props.errors.parent_id">{{ props.errors.parent_id }}</span>
+                            </div>
+
+                            <div class="mb-1">
+                                <label>Category Type</label>
+                                <select class="form-control form-select" v-model="updateForm.type">
+                                    <option disabled selected>Select Category Type</option>
+                                    <option value="physical">Physical</option>
+                                    <option value="digital">Digital</option>
+                                </select>
+                                <span class="text-danger" v-if="props.errors.type">{{ props.errors.type }}</span>
+                            </div>
+
+                            <div class="mb-1">
+                                <label>Order Number</label> <info title="Low number order level coming first"/>
+                                <input type="number" v-model="updateForm.order_level" class="form-control" placeholder="Low Number Height Priority">
+                                <span class="text-danger" v-if="props.errors.order_level">{{ props.errors.order_level }}</span>
+                            </div>
+
+                            <div class="mb-1">
+                                <label>Icon Image</label> <info title="Low number order level coming first"/>
+                                <ImageUploader v-model="updateForm.icon" />
+                                <span class="text-danger" v-if="props.errors.icon">{{ props.errors.icon }}</span>
+                            </div>
+
+                            <div class="mb-1">
+                                <label>Banner Image</label> <info title="Low number order level coming first"/>
+                                <ImageUploader v-model="updateForm.banner" />
+                                <span class="text-danger" v-if="props.errors.banner">{{ props.errors.banner }}</span>
+                            </div>
+
+                            <div class="d-flex flex-wrap mb-0">
+                                <button v-if="!isLoading" type="submit" class="btn btn-primary">Update</button>
+                                <button v-else class="btn btn-primary" type="button" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Loading...
+                                </button>
+                                <button type="reset" class="btn btn-outline-secondary ms-1">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </layout>
 </template>
