@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 
 class CategoryController extends Controller
@@ -38,9 +38,9 @@ class CategoryController extends Controller
                     'id' => $category->id,
                     'title' => $category->title,
                     'summery' => $category->summery,
-                    'icon' => $category->icon,
-                    'banner' => $category->banner,
                     'featured' => $category->featured,
+                    'icon' => $category->icon != null ? config("app.url")."/storage/".$category->icon : null,
+                    'banner' =>$category->banner != null ? config("app.url")."/storage/".$category->banner : null,
                     'childrens_count' => $category->childrens_count,
                     'top' => $category->top,
                     'type' => $category->type,
@@ -68,15 +68,22 @@ class CategoryController extends Controller
      * @param StoreCategoryRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreCategoryRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreCategoryRequest $request)
     {
         $data = $request->all();
-        // we upload our image after saving this category
-        $data['icon'] = null;
-        $data['banner'] = null;
+
+        if (Request::hasFile('icon')){
+            $icon = Request::file('icon')->store('uploads/all', 'public');
+            fileResize(Request::file('icon'), $icon, 60, 60);
+            $data['icon'] = $icon;
+        }
+
+        if (Request::hasFile('banner')){
+            $banner = Request::file('banner')->store('uploads/all', 'public');
+            $data['banner'] = $banner;
+        }
         Category::create($data);
         return back();
-//        return Response::json(['message' => 'Your Category Successfully Added.'], 200);
     }
 
     /**
@@ -107,11 +114,26 @@ class CategoryController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Category $category)
+    public function update($id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        $data = Request::all();
+        if (Request::hasFile('icon')){
+            $icon = Request::file('icon')->store('uploads/all', 'public');
+            fileResize(Request::file('icon'), $icon, 60, 60);
+            $data['icon'] = $icon;
+        }
+
+        if (Request::hasFile('banner')){
+            $banner = Request::file('banner')->store('uploads/all', 'public');
+            $data['banner'] = $banner;
+        }
+
+        $category->update($data);
+        return back();
     }
 
     /**
