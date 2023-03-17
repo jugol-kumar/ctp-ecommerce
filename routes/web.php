@@ -35,6 +35,7 @@ Route::prefix('panel')->name('admin.')->middleware(['auth','web'])->group(functi
 
     // categories
     Route::resource('category', CategoryController::class);
+    Route::post('/category/update-with-files/{id}', [CategoryController::class, 'update']);
 
     // test products
     Route::get('products', [ProductController::class, 'index'])->name('index');

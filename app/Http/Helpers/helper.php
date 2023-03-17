@@ -1,6 +1,8 @@
 <?php
 
 
+use Illuminate\Support\Facades\Log;
+use Intervention\Image\Facades\Image;
 use JetBrains\PhpStorm\ArrayShape;
 
 if (!function_exists("jsonResponse")){
@@ -13,5 +15,22 @@ if (!function_exists("jsonResponse")){
           "message" => $message,
           "data" => $data
         ];
+    }
+}
+
+if (!function_exists("fileResize")){
+    function fileResize($file, $storagePath, $width = null, $height = null){
+        try {
+            $img = Image::make($file->getRealPath())->encode();
+            if ($width != null || $height != null){
+                $img->resize($width, $height);
+            }
+            $img->save('storage/'.$storagePath);
+            clearstatcache();
+        } catch (\Exception $e) {
+            Log::error("errors" ,[
+                "error message"  => $e
+            ]);
+        }
     }
 }

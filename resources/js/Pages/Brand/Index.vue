@@ -20,8 +20,8 @@ const action = useAction();
 const slugTitle = useSlug();
 
 const props = defineProps({
-    categories:[] | null,
-    parent_categories:[] | null,
+    brands:[] | null,
+    parent_brands:[] | null,
     main_url:String | null,
     errors:Object | null,
     filters: Object,
@@ -129,13 +129,13 @@ watch([search, perPage], debounce(function ([val, val2]) {
     <layout>
         <div class="content-header row mb-1">
             <div class="col-12 d-flex align-items-center justify-content-between">
-                <h2 class="float-start mb-0">Category List</h2>
+                <h2 class="float-start mb-0">Brand List</h2>
                 <button class="btn btn-sm btn-gradient-primary d-flex align-items-center"
                         type="button"
                         data-bs-toggle="modal"
                         data-bs-target="#addItemModal">
                     <vue-feather type="plus" size="15"/>
-                    <span>Add New Category</span>
+                    <span>Add New Brand</span>
                 </button>
             </div>
         </div>
@@ -167,7 +167,7 @@ watch([search, perPage], debounce(function ([val, val2]) {
                         </div>
                     </div>
 
-                    <table class="category-list-table table">
+                    <table class="Brand-list-table table">
                         <thead class="table-light">
                         <tr class=null>
                             <th class="sorting">Id</th>
@@ -179,29 +179,29 @@ watch([search, perPage], debounce(function ([val, val2]) {
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="category in categories.data" :key="category.id">
-                            <td>#_{{ category.id }}</td>
+                        <tr v-for="Brand in brands.data" :key="Brand.id">
+                            <td>#_{{ Brand.id }}</td>
                             <td>
-                                <span class="d-flex align-items-center" v-if="category.childrens_count > 0">
-                                    {{ category.title }}
-                                    <span class="text-info" style="margin-left: 5px;" v-c-tooltip="`${category.childrens_count} Child In This Category.`">
+                                <span class="d-flex align-items-center" v-if="Brand.childrens_count > 0">
+                                    {{ Brand.title }}
+                                    <span class="text-info" style="margin-left: 5px;" v-c-tooltip="`${Brand.childrens_count} Child In This Brand.`">
                                         <vue-feather type="info" size="15"/>
                                     </span>
                                 </span>
-                                <span v-else class="text-capitalize">{{ category.title }}</span>
+                                <span v-else class="text-capitalize">{{ Brand.title }}</span>
                             </td>
                             <td>
-                                <img v-if="category.icon" :src="category.icon" alt=""> <span v-else>---</span>
+                                <img v-if="Brand.icon" :src="Brand.icon" alt=""> <span v-else>---</span>
                             </td>
                             <td>
-                                <img v-if="category.banner" :src="category.banner" alt="" width="200" height="100"> <span v-else>---</span>
+                                <img v-if="Brand.banner" :src="Brand.banner" alt="" width="200" height="100"> <span v-else>---</span>
                             </td>
-                            <td>{{ category.created_at }}</td>
+                            <td>{{ Brand.created_at }}</td>
                             <td>
-                                <span class="text-primary cursor-pointer"  @click="showItem(category.id, 'edit')">
+                                <span class="text-primary cursor-pointer"  @click="showItem(Brand.id, 'edit')">
                                     <vue-feather type="edit" size="15"/>
                                 </span>
-                                <span class="text-danger cursor-pointer ms-1"  @click="action.deleteItem(props.main_url, category.id)">
+                                <span class="text-danger cursor-pointer ms-1"  @click="action.deleteItem(props.main_url, Brand.id)">
                                     <vue-feather type="trash" size="15"/>
                                 </span>
                             </td>
@@ -210,11 +210,11 @@ watch([search, perPage], debounce(function ([val, val2]) {
                                     Action
                                 </button>
                                 <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton">
-                                    <button class="dropdown-item d-flex align-items-center text-info w-100" type="button" @click="showItem(category.id, 'edit')">
+                                    <button class="dropdown-item d-flex align-items-center text-info w-100" type="button" @click="showItem(Brand.id, 'edit')">
                                         <vue-feather type="edit" size="15"/>
                                         <span class="ms-1">Edit</span>
                                     </button>
-                                    <button class="dropdown-item d-flex align-items-center text-danger w-100" type="button" @click="deleteItem(category.id)">
+                                    <button class="dropdown-item d-flex align-items-center text-danger w-100" type="button" @click="deleteItem(Brand.id)">
                                         <vue-feather type="trash" size="15"/>
                                         <span class="ms-1">Delete</span>
                                     </button>
@@ -224,7 +224,7 @@ watch([search, perPage], debounce(function ([val, val2]) {
                         </tr>
                         </tbody>
                     </table>
-                    <Pagination :links="categories.links" :from="categories.from" :to="categories.to" :total="categories.total"/>
+                    <Pagination :links="brands.links" :from="brands.from" :to="brands.to" :total="brands.total"/>
                 </div>
             </div>
         </section>
@@ -236,7 +236,7 @@ watch([search, perPage], debounce(function ([val, val2]) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
                     <div class="modal-header mb-1">
                         <h5 class="modal-title">
-                            <span class="align-middle">Add new category</span>
+                            <span class="align-middle">Add new Brand</span>
                         </h5>
                     </div>
                     <div class="modal-body flex-grow-1">
@@ -249,41 +249,18 @@ watch([search, perPage], debounce(function ([val, val2]) {
                                 <span class="text-danger" v-if="props.errors.title">{{ props.errors.title }}</span>
                             </div>
                             <div class="mb-1">
-                                <div class="d-flex align-baseline">
-                                    <label>Parent Category</label> <info title="If you want to add this category as a child then select an parent category"/>
-                                </div>
-                                <vSelect :options="props.parent_categories" v-model="createForm.parent_id" label="title" :reduce="category => category.id" placeholder="Select Me As Parent"/>
-                                <span class="text-danger" v-if="props.errors.parent_id">{{ props.errors.parent_id }}</span>
+                                <label class="form-label">Slogan</label>
+                                <input class="form-control readonly"
+                                       v-model="createForm.slogan"
+                                       type="text" placeholder="e.g latest faction"/>
+                                <span class="text-danger" v-if="props.errors.slogan">{{ props.errors.slogan }}</span>
                             </div>
 
                             <div class="mb-1">
-                                <label>Category Type</label>
-                                <select class="form-control form-select" v-model="createForm.type">
-                                    <option disabled selected>Select Category Type</option>
-                                    <option value="physical">Physical</option>
-                                    <option value="digital">Digital</option>
-                                </select>
-                                <span class="text-danger" v-if="props.errors.type">{{ props.errors.type }}</span>
+                                <label>Logo Image</label> <info title="Low number order level coming first"/>
+                                <ImageUploader v-model="createForm.logo" />
+                                <span class="text-danger" v-if="props.errors.logo">{{ props.errors.logo }}</span>
                             </div>
-
-                            <div class="mb-1">
-                                <label>Order Number</label> <info title="Low number order level coming first"/>
-                                <input type="number" v-model="createForm.order_level" class="form-control" placeholder="Low Number Height Priority">
-                                <span class="text-danger" v-if="props.errors.order_level">{{ props.errors.order_level }}</span>
-                            </div>
-
-                            <div class="mb-1">
-                                <label>Icon Image</label> <info title="Low number order level coming first"/>
-                                <ImageUploader v-model="createForm.icon" />
-                                <span class="text-danger" v-if="props.errors.icon">{{ props.errors.icon }}</span>
-                            </div>
-
-                            <div class="mb-1">
-                                <label>Banner Image</label> <info title="Low number order level coming first"/>
-                                <ImageUploader v-model="createForm.banner" />
-                                <span class="text-danger" v-if="props.errors.banner">{{ props.errors.banner }}</span>
-                            </div>
-
                             <div class="d-flex flex-wrap mb-0">
                                 <button v-if="!isLoading" type="submit" class="btn btn-primary">Submit</button>
                                 <button v-else class="btn btn-primary" type="button" disabled>
@@ -303,7 +280,7 @@ watch([search, perPage], debounce(function ([val, val2]) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
                     <div class="modal-header mb-1">
                         <h5 class="modal-title">
-                            <span class="align-middle">Edit Category</span>
+                            <span class="align-middle">Edit Brand</span>
                         </h5>
                     </div>
                     <div class="modal-body flex-grow-1">
@@ -316,33 +293,11 @@ watch([search, perPage], debounce(function ([val, val2]) {
                                 <span class="text-danger" v-if="props.errors.title">{{ props.errors.title }}</span>
                             </div>
                             <div class="mb-1">
-                                <div class="d-flex align-baseline">
-                                    <label>Parent Category</label> <info title="If you want to add this category as a child then select an parent category"/>
-                                </div>
-                                <vSelect :options="props.parent_categories" v-model="updateForm.parent_id" label="title" :reduce="category => category.id" placeholder="Select Me As Parent"/>
-                                <span class="text-danger" v-if="props.errors.parent_id">{{ props.errors.parent_id }}</span>
-                            </div>
-
-                            <div class="mb-1">
-                                <label>Category Type</label>
-                                <select class="form-control form-select" v-model="updateForm.type">
-                                    <option disabled selected>Select Category Type</option>
-                                    <option value="physical">Physical</option>
-                                    <option value="digital">Digital</option>
-                                </select>
-                                <span class="text-danger" v-if="props.errors.type">{{ props.errors.type }}</span>
-                            </div>
-
-                            <div class="mb-1">
-                                <label>Order Number</label> <info title="Low number order level coming first"/>
-                                <input type="number" v-model="updateForm.order_level" class="form-control" placeholder="Low Number Height Priority">
-                                <span class="text-danger" v-if="props.errors.order_level">{{ props.errors.order_level }}</span>
-                            </div>
-
-                            <div class="mb-1">
-                                <label>Icon Image</label> <info title="Low number order level coming first"/>
-                                <ImageUploader v-model="updateForm.icon" />
-                                <span class="text-danger" v-if="props.errors.icon">{{ props.errors.icon }}</span>
+                                <label class="form-label">Slogan</label>
+                                <input class="form-control readonly"
+                                       v-model="updateForm.slogan"
+                                       type="text" placeholder="e.g latest faction"/>
+                                <span class="text-danger" v-if="props.errors.slogan">{{ props.errors.slogan }}</span>
                             </div>
 
                             <div class="mb-1">
