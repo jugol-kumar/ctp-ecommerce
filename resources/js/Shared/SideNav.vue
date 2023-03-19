@@ -95,6 +95,12 @@
                                     <span class="menu-item text-truncate" data-i18n="Login">Category</span>
                                 </Link>
                             </li>
+                            <li>
+                                <Link preserve-scroll class="d-flex align-items-center" :href="`${this.$page.props.auth.ADMIN_URL}/brand`">
+                                    <vue-feather type="circle" />
+                                    <span class="menu-item text-truncate" data-i18n="Login">Brand</span>
+                                </Link>
+                            </li>
                         </ul>
                     </li>
                 </ul>

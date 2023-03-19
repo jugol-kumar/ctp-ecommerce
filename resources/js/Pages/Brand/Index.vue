@@ -21,27 +21,22 @@ const slugTitle = useSlug();
 
 const props = defineProps({
     brands:[] | null,
-    parent_brands:[] | null,
     main_url:String | null,
     errors:Object | null,
     filters: Object,
 });
 
 let createForm = useForm({
-    title: null,
-    parent_id:null,
+    name: null,
     order_level:null,
-    type:null,
     icon:null,
     banner:null,
 });
 
 let updateForm = useForm({
     id: null,
-    title: null,
-    parent_id:null,
+    name: null,
     order_level:null,
-    type:null,
     icon:null,
     banner:null,
 });
@@ -76,11 +71,10 @@ const addItem = () => {
 const showItem = (id, type) =>{
     isShow.value = null;
     axios.get(`${props.main_url}/${id}`).then((res) =>{
+        console.log(res);
         updateForm.id = res.data.id;
-        updateForm.title = res.data.title;
-        updateForm.parent_id = res.data.parent_id;
+        updateForm.name = res.data.name;
         updateForm.order_level = res.data.order_level;
-        updateForm.type = res.data.type;
         updateForm.icon = res.data.icon;
         updateForm.banner = res.data.banner;
 
@@ -182,14 +176,7 @@ watch([search, perPage], debounce(function ([val, val2]) {
                         <tr v-for="Brand in brands.data" :key="Brand.id">
                             <td>#_{{ Brand.id }}</td>
                             <td>
-                                <span class="d-flex align-items-center" v-if="Brand.childrens_count > 0">
-                                    {{ Brand.title }}
-                                    <span class="text-info" style="margin-left: 5px;" v-c-tooltip="`${Brand.childrens_count} Child In This Brand.`">
-                                        <vue-feather type="info" size="15"/>
-                                    </span>
-                                </span>
-                                <span v-else class="text-capitalize">{{ Brand.title }}</span>
-                            </td>
+                                <span class="text-capitalize">{{ Brand.name }}</span>
                             <td>
                                 <img v-if="Brand.icon" :src="Brand.icon" alt=""> <span v-else>---</span>
                             </td>
@@ -242,25 +229,31 @@ watch([search, perPage], debounce(function ([val, val2]) {
                     <div class="modal-body flex-grow-1">
                         <form @submit.prevent="addItem">
                             <div class="mb-1">
-                                <label class="form-label">Title</label>
+                                <label class="form-label">Name</label>
                                 <input class="form-control readonly"
-                                       v-model="createForm.title"
+                                       v-model="createForm.name"
                                        type="text" placeholder="e.g latest faction"/>
-                                <span class="text-danger" v-if="props.errors.title">{{ props.errors.title }}</span>
-                            </div>
-                            <div class="mb-1">
-                                <label class="form-label">Slogan</label>
-                                <input class="form-control readonly"
-                                       v-model="createForm.slogan"
-                                       type="text" placeholder="e.g latest faction"/>
-                                <span class="text-danger" v-if="props.errors.slogan">{{ props.errors.slogan }}</span>
+                                <span class="text-danger" v-if="props.errors.title">{{ props.errors.name }}</span>
                             </div>
 
                             <div class="mb-1">
-                                <label>Logo Image</label> <info title="Low number order level coming first"/>
-                                <ImageUploader v-model="createForm.logo" />
-                                <span class="text-danger" v-if="props.errors.logo">{{ props.errors.logo }}</span>
+                                <label>Order Number</label> <info title="Low number order level coming first"/>
+                                <input type="number" v-model="createForm.order_level" class="form-control" placeholder="Low Number Height Priority">
+                                <span class="text-danger" v-if="props.errors.order_level">{{ props.errors.order_level }}</span>
                             </div>
+
+                            <div class="mb-1">
+                                <label>Icon Image</label> <info title="Low number order level coming first"/>
+                                <ImageUploader v-model="createForm.icon" />
+                                <span class="text-danger" v-if="props.errors.icon">{{ props.errors.icon }}</span>
+                            </div>
+
+                            <div class="mb-1">
+                                <label>Banner Image</label> <info title="Low number order level coming first"/>
+                                <ImageUploader v-model="createForm.banner" />
+                                <span class="text-danger" v-if="props.errors.banner">{{ props.errors.banner }}</span>
+                            </div>
+                          
                             <div class="d-flex flex-wrap mb-0">
                                 <button v-if="!isLoading" type="submit" class="btn btn-primary">Submit</button>
                                 <button v-else class="btn btn-primary" type="button" disabled>
@@ -286,18 +279,23 @@ watch([search, perPage], debounce(function ([val, val2]) {
                     <div class="modal-body flex-grow-1">
                         <form @submit.prevent="updateItem">
                             <div class="mb-1">
-                                <label class="form-label">Title</label>
+                                <label class="form-label">Name</label>
                                 <input class="form-control readonly"
-                                       v-model="updateForm.title"
+                                       v-model="updateForm.name"
                                        type="text" placeholder="e.g latest faction"/>
-                                <span class="text-danger" v-if="props.errors.title">{{ props.errors.title }}</span>
+                                <span class="text-danger" v-if="props.errors.title">{{ props.errors.name }}</span>
                             </div>
+
                             <div class="mb-1">
-                                <label class="form-label">Slogan</label>
-                                <input class="form-control readonly"
-                                       v-model="updateForm.slogan"
-                                       type="text" placeholder="e.g latest faction"/>
-                                <span class="text-danger" v-if="props.errors.slogan">{{ props.errors.slogan }}</span>
+                                <label>Order Number</label> <info title="Low number order level coming first"/>
+                                <input type="number" v-model="updateForm.order_level" class="form-control" placeholder="Low Number Height Priority">
+                                <span class="text-danger" v-if="props.errors.order_level">{{ props.errors.order_level }}</span>
+                            </div>
+
+                            <div class="mb-1">
+                                <label>Icon Image</label> <info title="Low number order level coming first"/>
+                                <ImageUploader v-model="updateForm.icon" />
+                                <span class="text-danger" v-if="props.errors.icon">{{ props.errors.icon }}</span>
                             </div>
 
                             <div class="mb-1">
@@ -319,7 +317,5 @@ watch([search, perPage], debounce(function ([val, val2]) {
                 </div>
             </div>
         </div>
-
-
     </layout>
 </template>
