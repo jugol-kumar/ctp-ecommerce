@@ -177,8 +177,9 @@ watch([search, perPage], debounce(function ([val, val2]) {
                             <td>#_{{ Brand.id }}</td>
                             <td>
                                 <span class="text-capitalize">{{ Brand.name }}</span>
+                            </td>
                             <td>
-                                <img v-if="Brand.icon" :src="Brand.icon" alt=""> <span v-else>---</span>
+                                <img v-if="Brand.icon" :src="Brand.icon" alt=""  width="100" height="100"> <span v-else>---</span>
                             </td>
                             <td>
                                 <img v-if="Brand.banner" :src="Brand.banner" alt="" width="200" height="100"> <span v-else>---</span>
@@ -243,7 +244,10 @@ watch([search, perPage], debounce(function ([val, val2]) {
                             </div>
 
                             <div class="mb-1">
-                                <label>Icon Image</label> <info title="Low number order level coming first"/>
+                                <label>Icon Image</label>
+                                <a class="ms-1 text-info" href="https://worldvectorlogo.com/" target="_blank" v-c-tooltip="'Select vector (svg) logo for brand icon. or click here and explore world vector logos'">
+                                    <vue-feather type="external-link" size="15"/>
+                                </a>
                                 <ImageUploader v-model="createForm.icon" />
                                 <span class="text-danger" v-if="props.errors.icon">{{ props.errors.icon }}</span>
                             </div>
@@ -253,7 +257,7 @@ watch([search, perPage], debounce(function ([val, val2]) {
                                 <ImageUploader v-model="createForm.banner" />
                                 <span class="text-danger" v-if="props.errors.banner">{{ props.errors.banner }}</span>
                             </div>
-                          
+
                             <div class="d-flex flex-wrap mb-0">
                                 <button v-if="!isLoading" type="submit" class="btn btn-primary">Submit</button>
                                 <button v-else class="btn btn-primary" type="button" disabled>
