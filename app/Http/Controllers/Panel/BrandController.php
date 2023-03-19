@@ -19,7 +19,7 @@ class BrandController extends Controller
     {
         return inertia('Brand/Index', [
             'brands' => Brand::query()
-                ->when(\Illuminate\Support\Facades\Request::input('search'), function ($query, $search) {
+                ->when(Request::input('search'), function ($query, $search) {
                     $query->where('name', 'like', "%{$search}%");
                 })
                 ->latest()
@@ -61,8 +61,11 @@ class BrandController extends Controller
         $data =  Request::all();
 
         if (Request::hasFile('icon')){
+            $type = Request::file('icon')->getClientOriginalExtension();
             $icon = Request::file('icon')->store('uploads/all', 'public');
-            fileResize(Request::file('icon'), $icon, 60, 60);
+            if ($type != 'svg' || $type != 'gif'){
+                fileResize(Request::file('icon'), $icon, 60, 60);
+            }
             $data['icon'] = $icon;
         }
 
@@ -70,7 +73,7 @@ class BrandController extends Controller
             $banner = Request::file('banner')->store('uploads/all', 'public');
             $data['banner'] = $banner;
         }
-        $data['slug']=Str::slug($data['name']);
+
         Brand::create($data);
         return back();
     }
@@ -104,12 +107,17 @@ class BrandController extends Controller
      * @param \App\Models\Brand $brand
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Brand $brand)
+    public function update($id)
     {
+        $data = Request::all();
+        $brand = Brand::findOrFail($id);
 
         if (Request::hasFile('icon')){
+            $type = Request::file('icon')->getClientOriginalExtension();
             $icon = Request::file('icon')->store('uploads/all', 'public');
-            fileResize(Request::file('icon'), $icon, 60, 60);
+            if ($type != 'svg' || $type != 'gif'){
+                fileResize(Request::file('icon'), $icon, 60, 60);
+            }
             $data['icon'] = $icon;
         }
 
@@ -117,7 +125,7 @@ class BrandController extends Controller
             $banner = Request::file('banner')->store('uploads/all', 'public');
             $data['banner'] = $banner;
         }
-        $data['slug']=Str::slug($request['name']);
+
         $brand->update($data);
         return back();
     }
@@ -130,6 +138,7 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
-        //
+        $brand->delete();
+        return back();
     }
 }

@@ -6,13 +6,17 @@ import layout from "../../Shared/Layout.vue";
 
 <template>
     <layout>
-        <div class="content-header row">
-            <div class="content-header-left col-md-9 col-12 mb-2">
-                <div class="row breadcrumbs-top">
-                    <div class="col-12">
-                        <h2 class="float-start mb-0">Admin List</h2>
-                    </div>
-                </div>
+
+        <div class="content-header row mb-1">
+            <div class="col-12 d-flex align-items-center justify-content-between">
+                <h2 class="float-start mb-0">Product List</h2>
+                <a class="btn btn-sm btn-gradient-primary d-flex align-items-center"
+                   :href="`${this.$page.props.auth.ADMIN_URL}/product/create`"
+                   target="_blank"
+                   type="button">
+                    <vue-feather type="plus" size="15"/>
+                    <span>Add New Product</span>
+                </a>
             </div>
         </div>
         <section class="app-user-list">
