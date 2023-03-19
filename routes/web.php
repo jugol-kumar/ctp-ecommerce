@@ -41,6 +41,7 @@ Route::prefix('panel')->name('admin.')->middleware(['auth','web'])->group(functi
     //brands
     Route::resource('brand',BrandController::class);
     Route::post('/brand/update-with-files/{id}', [BrandController::class, 'update']);
+    
 
     // test products
     Route::get('products', [ProductController::class, 'index'])->name('index');

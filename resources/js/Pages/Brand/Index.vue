@@ -177,7 +177,6 @@ watch([search, perPage], debounce(function ([val, val2]) {
                             <td>#_{{ Brand.id }}</td>
                             <td>
                                 <span class="text-capitalize">{{ Brand.name }}</span>
-                            </td>
                             <td>
                                 <img v-if="Brand.icon" :src="Brand.icon" alt=""> <span v-else>---</span>
                             </td>
@@ -254,7 +253,7 @@ watch([search, perPage], debounce(function ([val, val2]) {
                                 <ImageUploader v-model="createForm.banner" />
                                 <span class="text-danger" v-if="props.errors.banner">{{ props.errors.banner }}</span>
                             </div>
-
+                          
                             <div class="d-flex flex-wrap mb-0">
                                 <button v-if="!isLoading" type="submit" class="btn btn-primary">Submit</button>
                                 <button v-else class="btn btn-primary" type="button" disabled>
