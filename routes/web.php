@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Panel\BrandController;
 use App\Http\Controllers\Panel\CategoryController;
 use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\ProductController;
@@ -36,6 +37,10 @@ Route::prefix('panel')->name('admin.')->middleware(['auth','web'])->group(functi
     // categories
     Route::resource('category', CategoryController::class);
     Route::post('/category/update-with-files/{id}', [CategoryController::class, 'update']);
+
+    //brands
+    Route::resource('brand',BrandController::class);
+    Route::post('/brand/update-with-files/{id}', [BrandController::class, 'update']);
 
     // test products
     Route::get('products', [ProductController::class, 'index'])->name('index');
