@@ -30,7 +30,7 @@ class BrandController extends Controller
                     'name' => $brand->name,
                     'summery' => $brand->summery,
                     'featured' => $brand->featured,
-                    'icon' => $brand->icon != null ? config("app.url")."/storage/".$brand->icon : null,
+                    'icon' => $brand->icon,
                     'banner' =>$brand->banner != null ? config("app.url")."/storage/".$brand->banner : null,
                     'top' => $brand->top,
                     'created_at' => $brand->created_at->format(config('app.date_format')),
