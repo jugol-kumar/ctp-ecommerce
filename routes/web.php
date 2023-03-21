@@ -47,6 +47,7 @@ Route::prefix('panel')->name('admin.')->middleware(['auth','web'])->group(functi
     Route::controller(ProductController::class)->name('product.')->group(function (){
         Route::get('products', 'index')->name('index');
         Route::get('product/create', 'create')->name('create');
+        Route::post('product/store', 'store')->name('store');
     });
 
 });
