@@ -9,7 +9,6 @@ import Switch from "../../components/Switch.vue";
 import Swal from "sweetalert2";
 import {Inertia} from "@inertiajs/inertia";
 
-
 const props = defineProps({
     categories:[] | null,
     brands:[]|null,
@@ -108,6 +107,11 @@ const saveProduct= () =>{
     alert("ok it")
 }
 
+const isLoading = ref(false);
+const saveProduct= () =>{
+    console.log("call here");
+    alert("ok it")
+}
 
 </script>
 
@@ -203,6 +207,7 @@ const saveProduct= () =>{
                             </fieldset>
                         </div>
                     </div>
+                    
                     <div class="card">
                         <div class="card-body">
                             <div class="">
@@ -453,7 +458,51 @@ const saveProduct= () =>{
                 <button class="btn btn-success" data-bs-dismiss="modal" aria-label="Close">Ok</button>
             </div>
         </Modal>
+        <div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false"  v-vb-is:modal>
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content p-5">
+                    <div v-if="isLoading" class="d-flex align-items-center justify-content-center">
+                        <img src="../../../iamges/loading2.svg" alt="">
+                    </div>
+                    <div v-if="!isLoading" class="d-flex align-items-center justify-content-center flex-column">
+                        <form @submit.prevent="saveProduct" >
+                            <button class="card bg-light-success" type="submit">
+                                <div class="card-body">
+                                    <h2 class="text-success">Save Product</h2>
+                                </div>
+                            </button>
+                        </form>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="card me-2 cursor-pointer" data-bs-dismiss="modal">
+                                <div class="card-body bg-light-info">
+                                    <h2 class="text-info">Need Change</h2>
+                                </div>
+                            </div>
+                            <div class="card ms-2 cursor-pointer" @click="cancelProducts">
+                                <div class="card-body bg-light-warning">
+                                    <h2 class="text-warning">Cancel Product</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <a :href="`${this.$page.props.auth.ADMIN_URL}/products`">
+                                <div class="card-body bg-light-danger">
+                                    <h2 class="text-danger">Back To Home</h2>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+
+
+
+    </layout>
+</template>
+
+<style>
 
         <div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false"  v-vb-is:modal>
             <div class="modal-dialog modal-lg modal-dialog-centered">

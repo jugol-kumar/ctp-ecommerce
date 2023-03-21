@@ -1,6 +1,8 @@
 <script setup>
 import layout from "../../Shared/Layout.vue";
-
+const props = defineProps({
+    products:[]|null,
+})
 
 </script>
 
@@ -57,7 +59,12 @@ import layout from "../../Shared/Layout.vue";
                         </tr>
                         </thead>
                         <tbody>
-
+                            <tr v-for="(item, key) in products" :key="`item-${key}`">
+                                <td>{{ item.user.name }}</td>
+                                <td>{{ item.category.title }}</td>
+                                <td>{{ item.brand.name }}</td>
+                                <td>{{ item.created_at }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
