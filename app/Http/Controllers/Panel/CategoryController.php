@@ -47,7 +47,7 @@ class CategoryController extends Controller
                     'created_at' => $category->created_at->format(config('app.date_format')),
                 ]),
             'filters' => Request::only(['search','perPage', 'dateRange']),
-            'parent_categories' => Category::whereNull('parent_id')->get(),
+            'parent_categories' => Category::get(),
             'main_url' => URL::route('admin.category.index')
         ]);
     }

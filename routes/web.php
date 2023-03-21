@@ -41,10 +41,14 @@ Route::prefix('panel')->name('admin.')->middleware(['auth','web'])->group(functi
     //brands
     Route::resource('brand',BrandController::class);
     Route::post('/brand/update-with-files/{id}', [BrandController::class, 'update']);
-    
 
     // test products
-    Route::get('products', [ProductController::class, 'index'])->name('index');
+    Route::controller(ProductController::class)->name('product.')->group(function (){
+        Route::get('products', 'index')->name('index');
+        Route::get('product/create', 'create')->name('create');
+        Route::post('product/store', 'store')->name('store');
+    });
+
 });
 
 
