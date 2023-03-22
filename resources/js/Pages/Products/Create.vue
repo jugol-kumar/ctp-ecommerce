@@ -8,34 +8,83 @@ import Editor from "../../components/Editor.vue";
 import Switch from "../../components/Switch.vue";
 import Swal from "sweetalert2";
 import {Inertia} from "@inertiajs/inertia";
-
+import {useData} from "../../Composables/useData.js";
+const specData = useData();
 const props = defineProps({
+    save_url:null,
     categories:[] | null,
     brands:[]|null,
     colors:[]|null,
+    errors:[]|null,
 })
 
 const productId = computed(() => Math.floor(100000 + Math.random() * 900000));
-
-
 
 const formData = useForm({
     productId: productId,
     productTitle:null,
     categoryId:null,
     brandId:null,
+
     productPrice:null,
     discountAmount:null,
     discountType:null,
     unit:null,
     qty:null,
-    description:"",
-    thumbnel:null,
+    lowStokeQty:null,
+
+    thumbnail:null,
     images:[],
     colorId:null,
     sizes:[],
-    specification:"<p><strong>this si default spesifications this is edited here </strong></p>"
+
+    specification:specData.markup,
+    description:"",
+
+    shippingType:null,
+    inSideDhaka:null,
+    outSideDhaka:null,
+    cod:null,
+
+    seoImage:null,
+    seoKeywords:[],
+    seoTitle:null,
+    seoDescriptions:null,
+
+    tax:null,
+    taxType:null,
+    vat:null,
+    vatType:null
 });
+
+const isLoading = ref(false);
+const saveProduct= () =>{
+    formData.post(props.save_url, {
+        preserveState: true,
+        replace: true,
+        onStart: res => {
+            isLoading.value = true;
+        },
+
+        onSuccess: page => {
+            document.getElementById('actionModal').$vb.modal.hide()
+            isLoading.value = false;
+            formData.reset();
+            $sToast.fire({
+                icon: 'success',
+                title: 'Signed in successfully'
+            })
+        },
+
+        onError: errors => {
+            document.getElementById('actionModal').$vb.modal.hide()
+            isLoading.value = false;
+            $toast.error("Validation Errors...")
+        }
+    });
+}
+
+
 
 const renderOptionGroup = (categories, prefix = '') => {
     return categories.map((category) => {
@@ -93,38 +142,49 @@ const cancelProducts = () => {
     })
 }
 const fullPageSpecification = ref(false)
-const fullPageSpec = () => {
-    fullPageSpecification.value = true;
+const fullPageSpec = () => fullPageSpecification.value = true;
+const defaultPageSpec = () => fullPageSpecification.value = false;
+const uploadThumbnail = (event) => formData.thumbnail = event.target.files[0];
+const seoImageUpload = (event) => formData.seoImage = event.target.files[0];
+const images = (event) =>{
+    for (let i = 0; i < event.target.files.length; i++){
+        formData.images.push(event.target.files[i])
+    }
 }
-const defultPageSpec = () => {
-    fullPageSpecification.value = false;
-}
-
-
-const isLoading = ref(false);
-const saveProduct= () =>{
-    console.log("call here");
-    alert("ok it")
-}
-
+const showErrors = ref(true)
+const clearErrors = () => showErrors.value = false;
 </script>
 
 <template>
     <layout>
 
-<!--        <div class="content-header row mb-1">
-            <div class="col-12 d-flex align-items-center justify-content-between text-right">
-                <a class="btn btn-sm btn-gradient-danger d-flex align-items-center"
-                   :href="`${this.$page.props.auth.ADMIN_URL}/products`"
-                   type="button">
-                    <vue-feather type="corner-down-left" size="15"/>
-                    <span class="ms-1">Back To List</span>
-                </a>
-            </div>
-        </div>-->
-
+        <!--        <div class="content-header row mb-1">
+                    <div class="col-12 d-flex align-items-center justify-content-between text-right">
+                        <a class="btn btn-sm btn-gradient-danger d-flex align-items-center"
+                           :href="`${this.$page.props.auth.ADMIN_URL}/products`"
+                           type="button">
+                            <vue-feather type="corner-down-left" size="15"/>
+                            <span class="ms-1">Back To List</span>
+                        </a>
+                    </div>
+                </div>-->
 
         <div class="content-body">
+
+
+
+            <div class="card" v-if="Object.keys(props.errors).length > 0 && showErrors">
+                <div class="card-body">
+                    <button class="float-end btn btn-default" @click="clearErrors">X</button>
+
+                    <ul>
+                        <li class="text-danger" v-for="(message, key) in props.errors">
+                            {{ message }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
             <div class="row match-height">
                 <div :class=" fullPageSpecification ? 'd-none' : 'col-md-4'">
                     <div class="card">
@@ -138,7 +198,6 @@ const saveProduct= () =>{
                     <div class="card">
                         <div class="card-body">
                             <AnimInput label="Product Title" v-model="formData.productTitle"/>
-
                             <div class="form-group mt-1">
                                 <label>Category</label>
                                 <vSelect :options="formattedParentCategories" v-model="formData.categoryId" label="label" placeholder="e.g Select Category">
@@ -192,6 +251,7 @@ const saveProduct= () =>{
                                         <option value="flat">৳</option>
                                     </select>
                                 </div>
+
                             </fieldset>
                             <fieldset class="mt-1">
                                 <label>Unit And Quantity</label> <info title="Apply Also Variant Price." />
@@ -222,13 +282,13 @@ const saveProduct= () =>{
                                         <div class="col">
                                             <div class="mb-1">
                                                 <label>Product Thumbnail</label>
-                                                <input type="text" v-model="formData.thumbnel"  class="form-control" v-c-tooltip="'Click here for choose file. It\'s Single File'"/>
+                                                <input type="file" @input="uploadThumbnail" class="form-control" v-c-tooltip="'Click here for choose file. It\'s Single File'"/>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="mb-1">
                                                 <label>Product Image's</label>
-                                                <input type="text" v-model="formData.images" class="form-control" multiple v-c-tooltip="'Click here for choose file. If you want to chos multiple image then hold press ctrl and select images or select multiple image with mouse cursor.'"/>
+                                                <input type="file" class="form-control" @input="images" multiple v-c-tooltip="'Click here for choose file. If you want to chos multiple image then hold press ctrl and select images or select multiple image with mouse cursor.'"/>
                                             </div>
                                         </div>
                                     </div>
@@ -272,7 +332,7 @@ const saveProduct= () =>{
                                 <button v-if="!fullPageSpecification" class="btn-icon btn" @click="fullPageSpec" v-c-tooltip="'Enter Full page'" >
                                     <vue-feather type="external-link"/>
                                 </button>
-                                <button v-else class="btn-icon btn" @click="defultPageSpec" v-c-tooltip="'Exit full page'" >
+                                <button v-else class="btn-icon btn" @click="defaultPageSpec" v-c-tooltip="'Exit full page'" >
                                     <vue-feather type="external-link" style="rotate: 180deg;"/>
                                 </button>
                             </div>
@@ -284,24 +344,25 @@ const saveProduct= () =>{
                 </div>
 
                 <div :class="fullPageSpecification ? 'd-none' : 'col-md-2'">
-<!--                    <div class="card">
-                        <div class="card-body text-center" v-c-tooltip="'If you want to make this product for featured then enable this switch'">
-                            <Switch class="mb-1" label="Featured Product"/>
-                            <span class="label">Featured Status</span>
-                        </div>
-                    </div>-->
+                    <!--                    <div class="card">
+                                        <div class="card-body text-center" v-c-tooltip="'If you want to make this product for featured then enable this switch'">
+                                            <Switch class="mb-1" label="Featured Product"/>
+                                            <span class="label">Featured Status</span>
+                                        </div>
+                                    </div>-->
 
                     <div class="card">
                         <div class="card-body" v-c-tooltip="'This product quantity available or not this notification'">
                             <label class="label card-text">Low Stoke Quantity</label>
-                            <input type="text" class="form-control" placeholder="e.g 100 pc">
+                            <input type="text" v-model="formData.lowStokeQty" class="form-control" placeholder="e.g 100 pc">
                         </div>
                     </div>
 
                     <div class="card">
                         <div class="card-body">
                             <label class="label card-text">Shipping Config</label>
-                            <select @change="shiConfig" class="form-control form-select">
+                            <select v-model="formData.shippingType" @change="shiConfig" class="form-control form-select">
+                                <option value="null" disabled>Select Sipping Type</option>
                                 <option value="f">Free Shipping</option>
                                 <option value="p">Product Wish</option>
                                 <option value="c">City Wise</option>
@@ -311,7 +372,7 @@ const saveProduct= () =>{
 
                     <div class="card">
                         <div class="card-body text-center" v-c-tooltip="'Cash On Delivery Enable Or Disabled'">
-                            <Switch class="mb-1"/>
+                            <Switch v-model="formData.cod" class="mb-1"/>
                             <span class="label">COD</span>
                         </div>
                     </div>
@@ -339,17 +400,16 @@ const saveProduct= () =>{
                             </div>
                         </a>
                     </div>
-<!--                    <div class="card">
-                        <a>
-                            <div class="card-body d-flex align-items-center justify-content-center">
-                                <h4 class="py-2 mb-0 text-warning">Cancel</h4>
-                            </div>
-                        </a>
-                    </div>-->
+                    <!--                    <div class="card">
+                                        <a>
+                                            <div class="card-body d-flex align-items-center justify-content-center">
+                                                <h4 class="py-2 mb-0 text-warning">Cancel</h4>
+                                            </div>
+                                        </a>
+                                    </div>-->
                 </div>
             </div>
         </div>
-
 
         <Modal id="addDescriptions" title="Full Description About This Product"  v-vb-is:modal>
             <div class="modal-body">
@@ -375,16 +435,16 @@ const saveProduct= () =>{
             <div class="modal-body">
                 <div class="">
                     <label class="label">Inside Dhaka</label>
-                    <input type="text" class="form-control" placeholder="e.g Inside Dhaka 100.00 ৳">
+                    <input type="text" v-model="formData.inSideDhaka" class="form-control" placeholder="e.g Inside Dhaka 100.00 ৳">
                 </div>
 
                 <div class="mt-1">
                     <label class="label">Outside Dhaka</label>
-                    <input type="text" class="form-control" placeholder="e.g Outside Dhaka 120.00 ৳">
+                    <input type="text" v-model="formData.outSideDhaka" class="form-control" placeholder="e.g Outside Dhaka 120.00 ৳">
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-success" data-bs-dismiss="modal" aria-label="Close">Ok</button>
+                <button class="btn btn-success" aria-label="Close">Ok</button>
             </div>
         </Modal>
 
@@ -392,11 +452,12 @@ const saveProduct= () =>{
             <div class="modal-body">
                 <div class="mb-1">
                     <label class="label">Title</label>
-                    <input class="form-control" type="text" placeholder="e.g seo title / default product title">
+                    <input class="form-control" v-model="formData.seoTitle" type="text" placeholder="e.g seo title / default product title">
                 </div>
                 <div class="mb-1">
                     <label class="label">Keywords</label>
                     <v-select
+                        v-model="formData.seoKeywords"
                         multiple
                         taggable
                         placeholder="Product Sizes"></v-select>
@@ -404,12 +465,12 @@ const saveProduct= () =>{
 
                 <div class="mb-1">
                     <label class="label">Image</label>
-                    <input type="file" class="form-control" v-c-tooltip="'Click here for choose file'"/>
+                    <input type="file" @input="seoImageUpload" class="form-control" v-c-tooltip="'Click here for choose file'"/>
                 </div>
 
                 <div class="mt-1">
                     <label class="label">Description's</label>
-                    <textarea class="form-control" name="" id="" rows="8" placeholder="e.g seo full descriptions"></textarea>
+                    <textarea class="form-control" v-model="formData.seoDescriptions" id="" rows="8" placeholder="e.g seo full descriptions"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -423,9 +484,10 @@ const saveProduct= () =>{
                     <label>Vat</label>
                     <div class="input-group">
                         <input type="number" class="form-control"
-                               name="min_experience"
+                               v-model="formData.vat"
                                placeholder="e.g Vat Amount..." aria-label="Amount">
                         <select name="experience_type"
+                                v-model="formData.vatType"
                                 class="form-control selectpicker">
                             <option disabled selected> e.g Select Type</option>
                             <option value="percentage">%</option>
@@ -438,9 +500,10 @@ const saveProduct= () =>{
                     <label>Tax</label>
                     <div class="input-group">
                         <input type="number" class="form-control"
-                               name="min_experience"
+                               v-model="formData.tax"
                                placeholder="e.g Tax Amount..." aria-label="Amount">
                         <select name="experience_type"
+                                v-model="formData.taxType"
                                 class="form-control selectpicker">
                             <option disabled selected> e.g Select Type</option>
                             <option value="percentage">%</option>
@@ -453,7 +516,6 @@ const saveProduct= () =>{
                 <button class="btn btn-success" data-bs-dismiss="modal" aria-label="Close">Ok</button>
             </div>
         </Modal>
-
 
         <div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false"  v-vb-is:modal>
             <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -493,9 +555,6 @@ const saveProduct= () =>{
                 </div>
             </div>
         </div>
-
-
-
 
     </layout>
 </template>

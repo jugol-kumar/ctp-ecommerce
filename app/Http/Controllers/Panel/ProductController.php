@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\Properties;
 use App\Models\ActiveColor;
 use App\Models\Brand;
 use App\Models\Category;
@@ -37,12 +38,29 @@ class ProductController extends Controller
        Request::validate([
            'productTitle' => 'required',
            'categoryId' => 'required',
-           'brandId' => 'required'
+           'brandId' => 'required',
+           'productPrice' => 'required',
+           'unit' => 'required',
+           'qty' => 'required',
+           'description' => 'nullable|max:400|min:100'
        ]);
+
+       if (Request::input('discountAmount') != null){
+           Request::validate([
+               'discountType' => 'required'
+           ]);
+       }
+
+       if (Request::input('shippingType') === 'p'){
+           Request::validate([
+               'inSideDhaka' => 'required',
+               'outSideDhaka' => 'required',
+           ]);
+       }
 
        if (Request::hasFile('thumbnail')){
            $icon = Request::file('thumbnail')->store('uploads/all', 'public');
-           fileResize(Request::file('thumbnail'), $icon, 200, 300);
+           fileResize(Request::file('thumbnail'), $icon, Properties::$productImageWeight, Properties::$productImageHeight);
            $data['thumbnail'] = $icon;
        }
 
@@ -57,6 +75,7 @@ class ProductController extends Controller
 
 
        $data['sku'] = Request::input('productId');
+       $data['title'] = Request::input('productTitle');
        $data['user_id'] = Auth::id();
        $data['category_id'] = Request::input('categoryId') ? intval(Request::input('categoryId')["value"]["id"]) : null;
        $data['brand_id'] = Request::input('brandId') ? intval(Request::input('brandId')["id"]) : null;
