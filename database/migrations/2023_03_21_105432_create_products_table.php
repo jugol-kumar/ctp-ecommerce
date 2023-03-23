@@ -29,7 +29,7 @@ return new class extends Migration
             $table->foreignIdFor(Brand::class, 'brand_id')->constrained('brands')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-            $table->foreignIdFor(ActiveColor::class, 'active_color_id')->constrained('active_colors');
+            $table->bigInteger( 'active_color_id')->nullable();//->constrained('active_colors');
 
             $table->string('title');
             $table->string('slug')->unique();
@@ -54,11 +54,14 @@ return new class extends Migration
 
             $table->boolean('cod')->default(false);
 
+            $table->integer('tax')->nullable()->default(0);
+            $table->enum('tax_type', ['percentage', 'flat'])->nullable();
+            $table->integer('vat')->nullable()->default(0);
+
             $table->integer('tax')->default(0);
             $table->enum('tax_type', ['percentage', 'flat'])->nullable();
             $table->integer('vat')->default(0);
-            $table->enum('vat_type', ['percentage', 'flat'])->nullable();
-
+            
             $table->timestamps();
         });
     }

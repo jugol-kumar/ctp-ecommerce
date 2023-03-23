@@ -25,6 +25,10 @@ class DatabaseSeeder extends Seeder
         $sql = file_get_contents($cities);
         DB::unprepared($sql);
 
+        $cities = public_path('sql/active_colors.sql');
+        $sql = file_get_contents($cities);
+        DB::unprepared($sql);
+
 //        $cities = public_path('sql/cities.sql');
 //        $sql = file_get_contents($cities);
 //        DB::unprepared($sql);

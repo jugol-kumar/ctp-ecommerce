@@ -10,4 +10,7 @@ class Properties
     public static string $true = "true";
     public static string $false = "false";
 
+    public static int $productImageWeight= 350;
+    public static int $productImageHeight= 250;
+
 }

@@ -19,6 +19,7 @@ import coreUi from '@coreui/vue'
 import {vctooltip} from "@coreui/vue";
 import suggest from "./components/Sujesation.vue";
 import "../sass/editor.css"
+import "../sass/ecommerce.css"
 
 // import here this js file and export an name form there and import here.
 import "./plugins.js"

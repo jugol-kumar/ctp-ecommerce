@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Panel\BrandController;
 use App\Http\Controllers\Panel\CategoryController;
 use App\Http\Controllers\Panel\DashboardController;
@@ -18,17 +19,17 @@ use App\Http\Controllers\Auth\LoginController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::controller(HomeController::class)->name('frontend.')->group(function(){
+    Route::get('/', 'home')->name('home');
+    Route::get('/product/single-product/{slug}', 'singleProduct')->name('singleProduct');
 });
 
 Route::middleware('guest')->group(function (){
     Route::get('login', [LoginController::class, 'login'])->name('login');
     Route::post('login', [LoginController::class, 'authenticate']);
-    Route::post('logout', [LoginController::class, 'destroy'])->middleware('auth');
-
 });
 
+Route::any('logout', [LoginController::class, 'destroy'])->middleware('auth');
 
 // admin routes
 Route::prefix('panel')->name('admin.')->middleware(['auth','web'])->group(function(){

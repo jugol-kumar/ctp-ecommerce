@@ -113,6 +113,7 @@ const saveProduct= () =>{
     alert("ok it")
 }
 
+
 </script>
 
 <template>
@@ -144,6 +145,7 @@ const saveProduct= () =>{
                     <div class="card">
                         <div class="card-body">
                             <AnimInput label="Product Title" v-model="formData.productTitle"/>
+
                             <div class="form-group mt-1">
                                 <label>Category</label>
                                 <vSelect :options="formattedParentCategories" v-model="formData.categoryId" label="label" placeholder="e.g Select Category">
@@ -543,8 +545,12 @@ const saveProduct= () =>{
             </div>
         </div>
 
+
+
+
     </layout>
 </template>
 
 <style>
+
 </style>

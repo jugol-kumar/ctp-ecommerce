@@ -178,7 +178,7 @@
                         <a class="dropdown-item" href="page-account-settings-account.html">
                             <vue-feather type="settings" /> Settings
                         </a>
-                        <a class="dropdown-item" href="auth-login-cover.html">
+                        <a class="dropdown-item" href="/logout">
                             <vue-feather type="power" /> Logout
                         </a>
                     </div>
