@@ -69,7 +69,7 @@ const saveProduct= () =>{
         onSuccess: page => {
             document.getElementById('actionModal').$vb.modal.hide()
             isLoading.value = false;
-            formData.reset();
+            // formData.reset();
             $sToast.fire({
                 icon: 'success',
                 title: 'Signed in successfully'
@@ -521,7 +521,7 @@ const clearErrors = () => showErrors.value = false;
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content p-5">
                     <div v-if="isLoading" class="d-flex align-items-center justify-content-center">
-                        <img src="../../../iamges/loading2.svg" alt="">
+                        <img src="../../../images/loading2.svg" alt="">
                     </div>
                     <div v-if="!isLoading" class="d-flex align-items-center justify-content-center flex-column">
                         <form @submit.prevent="saveProduct" >

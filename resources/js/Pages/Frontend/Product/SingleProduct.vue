@@ -1,0 +1,236 @@
+<script setup>
+import {computed, ref} from 'vue'
+import Layout from "../Shared/Layout.vue";
+import Gallery from "../Modules/Gallery.vue";
+import ProductCarousel from "../Modules/ProductCarousel.vue";
+
+
+const props = defineProps({
+        product:Object|null,
+        color:Object|null,
+    })
+    const currentSlide = ref(null)
+    const sizeRadio = ref(false)
+    const breakpoints = {
+        700: {
+            itemsToShow: 3,
+            snapAlign: 'end',
+        },
+        1024: {
+            itemsToShow: 5,
+            snapAlign: 'start'
+        }
+    }
+
+    const images = computed(() =>{
+        let images = [];
+        for (let i = 0; i< JSON.parse(props.product.images).length; i++){
+            images.push("/storage/"+JSON.parse(props.product.images)[i])
+        }
+        images.push(props.product.thumbnail)
+        return images;
+    })
+
+</script>
+
+<template>
+    <Layout>
+        <section class="app-ecommerce-details mt-2">
+            <div class="card card-shadow">
+                <!-- Product Details starts -->
+                <div class="card-body">
+                    <div class="row my-2">
+                        <div class="col-12 col-md-5">
+                            <div class="row flex-column">
+                                <Gallery :images="images"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-7">
+                            <h1>Sku Id : #_{{ product.sku }}</h1>
+
+                            <h2 class="text-capitalize mt-2 text-primary" v-text="product.title"></h2>
+
+                            <span class="card-text item-company">By
+                                <a href="#" class="company-name">{{ product.brand.name }}</a> & Category By
+                                <a href="#" class="company-name">{{ product.category.title }}</a>
+                            </span>
+                            <div class="ecommerce-details-price d-flex flex-wrap mt-1">
+                                <h4 class="item-price me-1">৳ {{ product.price }}</h4>
+                                <ul class="unstyled-list list-inline ps-1 border-start">
+                                    <li class="ratings-list-item" v-for="item in 4">
+                                        <vue-feather type="star" class="filled-star"/>
+                                    </li>
+                                    <li class="ratings-list-item">
+                                        <vue-feather type="star" class="unfilled-star"/>
+                                    </li>
+                                </ul>
+                            </div>
+                            <p class="card-text">Available - <span class="text-success">{{ product.qty > 0 ? 'In stock' : 'Out of stock' }}</span></p>
+
+                            <p class="card-text" v-text="product.description"></p>
+                            <ul class="product-features list-unstyled">
+                                <li class="d-flex align-items-center mb-1">
+                                    <vue-feather type="shopping-cart"/>
+                                    <span class="ms-1">Free Shipping</span>
+                                </li>
+                            </ul>
+                            <hr />
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4>Color</h4>
+                                            <div class="color-box p-1 d-block" :style="{background:color.code}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4>Size's</h4>
+                                            <select class="select2 form-select" >
+                                                <option value="null" selected disabled>I want this size.</option>
+                                                <option :value="item" v-for="item in JSON.parse(product.sizes)">{{ item }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-10" v-if="sizeRadio">
+                                    <div class="card" v-for="item in JSON.parse(product.sizes)">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Basic Radio</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row custom-options-checkable g-1">
+                                                <div class="col">
+                                                    <input class="custom-option-item-check" type="radio" name="customOptionsCheckableRadios" id="customOptionsCheckableRadios1" value="">
+                                                    <label class="custom-option-item p-1" for="customOptionsCheckableRadios1">
+                                                        {{ item }}
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <input class="custom-option-item-check" type="radio" name="customOptionsCheckableRadios" id="customOptionsCheckableRadios2" value="">
+                                                    <label class="custom-option-item p-1" for="customOptionsCheckableRadios2">
+                                                        {{ item }}
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <input class="custom-option-item-check" type="radio" name="customOptionsCheckableRadios" id="customOptionsCheckableRadios3" value="">
+                                                    <label class="custom-option-item p-1" for="customOptionsCheckableRadios3">
+                                                        {{ item }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <hr />
+                            <div class="d-flex flex-column flex-sm-row pt-1">
+                                <a href="#" class="btn btn-primary btn-cart me-0 me-sm-1 mb-1 mb-sm-0 d-flex align-items-center">
+                                    <vue-feather type="shopping-cart" class="me-50"/>
+                                    <span class="add-to-cart">Add to cart</span>
+                                </a>
+                                <a href="#" class="btn btn-outline-secondary btn-wishlist me-0 me-sm-1 mb-1 mb-sm-0 d-flex align-items-center">
+                                    <vue-feather type="heart" class="me-50"/>
+                                    <span>Wishlist</span>
+                                </a>
+                                <div class="btn-group dropdown-icon-wrapper btn-share">
+                                    <button type="button" class="btn btn-icon hide-arrow btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <vue-feather type="share-2"></vue-feather>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <a href="#" class="dropdown-item d-flex align-items-center">
+                                            <vue-feather type="facebook"/>
+                                            <span class="add-to-cart ms-1">Facebook</span>
+                                        </a>
+                                        <a href="#" class="dropdown-item d-flex align-items-center">
+                                            <vue-feather type="twitter"/>
+                                            <span class="add-to-cart ms-1">Twitter</span>
+                                        </a>
+                                        <a href="#" class="dropdown-item d-flex align-items-center">
+                                            <vue-feather type="instagram"/>
+                                            <span class="add-to-cart ms-1">Facebook</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<!--
+            <div class="card">
+                <div class="card-body">
+                    &lt;!&ndash; Item features starts &ndash;&gt;
+                    <div class="item-features">
+                        <div class="row text-center">
+                            <div class="col-12 col-md-4 mb-4 mb-md-0">
+                                <div class="w-75 mx-auto">
+                                    <i data-feather="award"></i>
+                                    <h4 class="mt-2 mb-1">100% Original</h4>
+                                    <p class="card-text">Chocolate bar candy canes ice cream toffee. Croissant pie cookie halvah.</p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 mb-4 mb-md-0">
+                                <div class="w-75 mx-auto">
+                                    <i data-feather="clock"></i>
+                                    <h4 class="mt-2 mb-1">10 Day Replacement</h4>
+                                    <p class="card-text">Marshmallow biscuit donut dragée fruitcake. Jujubes wafer cupcake.</p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 mb-4 mb-md-0">
+                                <div class="w-75 mx-auto">
+                                    <i data-feather="shield"></i>
+                                    <h4 class="mt-2 mb-1">1 Year Warranty</h4>
+                                    <p class="card-text">Cotton candy gingerbread cake I love sugar plum I love sweet croissant.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    &lt;!&ndash; Item features ends &ndash;&gt;
+                </div>
+            </div>
+-->
+
+
+
+            <div class="card card-shadow">
+                <div class="card-body">
+                    <span v-html="product.specification"></span>
+                </div>
+            </div>
+
+
+            <div class="card card-shadow">
+                <div class="card-body">
+                    <div class="mt-4 mb-2 text-center">
+                        <h4>Related Products</h4>
+                        <p class="card-text">People also search for this items</p>
+                    </div>
+                    <ProductCarousel :products="product.category.products"/>
+                </div>
+            </div>
+        </section>
+    </Layout>
+</template>
+
+<style scoped>
+    .card-shadow{
+        box-shadow: 0 0px 14px -1px rgb(34 41 47 / 32%) !important;
+    }
+    .color-box{
+        width: 100px;
+        height: 15px;
+    }
+    /*.carousel__slide{*/
+    /*    margin: 0 1rem;*/
+    /*}*/
+
+</style>

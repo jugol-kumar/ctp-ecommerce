@@ -29,7 +29,7 @@ return new class extends Migration
             $table->foreignIdFor(Brand::class, 'brand_id')->constrained('brands')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-            $table->foreignIdFor(ActiveColor::class, 'active_color_id')->constrained('active_colors');
+            $table->bigInteger( 'active_color_id')->nullable();//->constrained('active_colors');
 
             $table->string('title');
             $table->string('slug')->unique();

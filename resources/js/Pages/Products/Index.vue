@@ -1,6 +1,8 @@
 <script setup>
 import layout from "../../Shared/Layout.vue";
 import {ref} from 'vue'
+import Pagination from "../../components/Pagination.vue";
+
 const props = defineProps({
     products:[]|null,
 })
@@ -37,7 +39,7 @@ const gridList = (e) => {
             </div>
         </div>
         <section class="app-user-list">
-            <div class="row match-height">
+            <div class="row">
                 <div class="col-md-3">
                     <h2>Filters</h2>
                     <div class="card">
@@ -48,7 +50,7 @@ const gridList = (e) => {
                 </div>
                 <div class="col-md-9">
                     <div class="d-flex align-items-center justify-content-between mb-1">
-                        <span>16285 results found</span>
+                        <span>{{ products.total }} results found</span>
 
                         <div class="btn-group" role="group" aria-label="Basic outlined example">
                             <button class="btn btn-outline-primary" @click="gridList">
@@ -69,7 +71,7 @@ const gridList = (e) => {
                     </div>
                     <div class="container grid-container" id="productView">
                         <div class="row match-height">
-                            <div class="col-12 col-md-6 col-lg-4 product-card-hover" v-for="item in props.products" :key="'item-'+item.id">
+                            <div class="col-12 col-md-6 col-lg-4 product-card-hover" v-for="item in products.data" :key="'item-'+item.id">
                                 <div class="card ecommerce-card position-relative">
                                     <div class="item-img text-center">
                                         <a href="#">
@@ -122,6 +124,7 @@ const gridList = (e) => {
                                     </div>-->
                                 </div>
                             </div>
+                            <Pagination :links="products.links" :from="products.from" :to="products.to" :total="products.total" notShowNumber/>
                         </div>
                     </div>
                 </div>

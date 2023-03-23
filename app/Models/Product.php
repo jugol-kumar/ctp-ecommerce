@@ -23,6 +23,10 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
+    public function active_color(){
+        return $this->belongsTo(ActiveColor::class, 'active_color_id');
+    }
+
     public function user(){
         return $this->belongsTo(User::class);
     }
@@ -36,7 +40,7 @@ class Product extends Model
     protected function thumbnail(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value ? Storage::url($value) : '/images/avatar.png',
+            get: fn ($value) => $value ? Storage::url($value) : asset('img/logo.png'),
         );
     }
 

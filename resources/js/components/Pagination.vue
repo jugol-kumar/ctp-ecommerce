@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex justify-content-between mx-0 row my-1 pt-1">
-        <div class="col-sm-12 col-md-5">
+        <div class="col-sm-12 col-md-5" v-if="!props.notShowNumber">
             <div class="text-shadow">
                 Showing {{ from }} to {{ to }} of {{ total }} entries</div>
         </div>
@@ -35,5 +35,9 @@
             type: Number,
             default: 0
         },
+        notShowNumber:{
+            type:Boolean,
+            default:false,
+        }
     })
 </script>
