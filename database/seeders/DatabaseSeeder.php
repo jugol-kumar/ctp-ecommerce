@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
     {
 
 
+
+        $this->call([UserSeeder::class]);
         $cities = public_path('sql/countries.sql');
         $sql = file_get_contents($cities);
         DB::unprepared($sql);
@@ -34,7 +36,5 @@ class DatabaseSeeder extends Seeder
 //        DB::unprepared($sql);
 
 
-
-         $this->call([UserSeeder::class]);
     }
 }

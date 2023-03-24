@@ -1,19 +1,20 @@
 
 <script setup>
     import DarkToggle from "../../../components/DarkToggle.vue";
+    import CartItems from "../Modules/CartItems.vue";
 
-    defineProps({
-        authUser:null,
-    })
+
+
+
 </script>
 
 <template>
     <nav class="header-navbar navbar navbar-expand-lg align-items-center navbar-light">
         <div class="container">
             <div class="navbar-container d-flex align-items-center justify-content-between">
-                <div>
+                <a href="/">
                     <img src="../../../../images/logo.png" height="40" alt="">
-                </div>
+                </a>
 
 
                 <div class="card m-0 shadow-none">
@@ -32,90 +33,7 @@
                         </li>
 
                         <li class="nav-item dropdown dropdown-cart me-25">
-                            <a class="nav-link" href="#" data-bs-toggle="dropdown">
-                                <vue-feather type="shopping-cart"/>
-                                <span class="badge rounded-pill bg-primary badge-up cart-item-count">6</span></a>
-                            <ul class="dropdown-menu dropdown-menu-media dropdown-menu-end">
-                                <li class="dropdown-menu-header">
-                                    <div class="dropdown-header d-flex">
-                                        <h4 class="notification-title mb-0 me-auto">My Cart</h4>
-                                        <div class="badge rounded-pill badge-light-primary">4 Items</div>
-                                    </div>
-                                </li>
-                                <li class="scrollable-container media-list">
-                                    <div class="list-item align-items-center"><img class="d-block rounded me-1" src="/frontend/app-assets/images/pages/eCommerce/1.png" alt="donuts" width="62">
-                                        <div class="list-item-body flex-grow-1"><i class="ficon cart-item-remove" data-feather="x"></i>
-                                            <div class="media-heading">
-                                                <h6 class="cart-item-title"><a class="text-body" href="app-ecommerce-details.html"> Apple watch 5</a></h6><small class="cart-item-by">By Apple</small>
-                                            </div>
-                                            <div class="cart-item-qty">
-                                                <div class="input-group">
-                                                    <input class="touchspin-cart" type="number" value="1">
-                                                </div>
-                                            </div>
-                                            <h5 class="cart-item-price">$374.90</h5>
-                                        </div>
-                                    </div>
-                                    <div class="list-item align-items-center"><img class="d-block rounded me-1" src="/frontend/app-assets/images/pages/eCommerce/7.png" alt="donuts" width="62">
-                                        <div class="list-item-body flex-grow-1"><i class="ficon cart-item-remove" data-feather="x"></i>
-                                            <div class="media-heading">
-                                                <h6 class="cart-item-title"><a class="text-body" href="app-ecommerce-details.html"> Google Home Mini</a></h6><small class="cart-item-by">By Google</small>
-                                            </div>
-                                            <div class="cart-item-qty">
-                                                <div class="input-group">
-                                                    <input class="touchspin-cart" type="number" value="3">
-                                                </div>
-                                            </div>
-                                            <h5 class="cart-item-price">$129.40</h5>
-                                        </div>
-                                    </div>
-                                    <div class="list-item align-items-center"><img class="d-block rounded me-1" src="/frontend/app-assets/images/pages/eCommerce/2.png" alt="donuts" width="62">
-                                        <div class="list-item-body flex-grow-1"><i class="ficon cart-item-remove" data-feather="x"></i>
-                                            <div class="media-heading">
-                                                <h6 class="cart-item-title"><a class="text-body" href="app-ecommerce-details.html"> iPhone 11 Pro</a></h6><small class="cart-item-by">By Apple</small>
-                                            </div>
-                                            <div class="cart-item-qty">
-                                                <div class="input-group">
-                                                    <input class="touchspin-cart" type="number" value="2">
-                                                </div>
-                                            </div>
-                                            <h5 class="cart-item-price">$699.00</h5>
-                                        </div>
-                                    </div>
-                                    <div class="list-item align-items-center"><img class="d-block rounded me-1" src="/frontend/app-assets/images/pages/eCommerce/3.png" alt="donuts" width="62">
-                                        <div class="list-item-body flex-grow-1"><i class="ficon cart-item-remove" data-feather="x"></i>
-                                            <div class="media-heading">
-                                                <h6 class="cart-item-title"><a class="text-body" href="app-ecommerce-details.html"> iMac Pro</a></h6><small class="cart-item-by">By Apple</small>
-                                            </div>
-                                            <div class="cart-item-qty">
-                                                <div class="input-group">
-                                                    <input class="touchspin-cart" type="number" value="1">
-                                                </div>
-                                            </div>
-                                            <h5 class="cart-item-price">$4,999.00</h5>
-                                        </div>
-                                    </div>
-                                    <div class="list-item align-items-center"><img class="d-block rounded me-1" src="/frontend/app-assets/images/pages/eCommerce/5.png" alt="donuts" width="62">
-                                        <div class="list-item-body flex-grow-1"><i class="ficon cart-item-remove" data-feather="x"></i>
-                                            <div class="media-heading">
-                                                <h6 class="cart-item-title"><a class="text-body" href="app-ecommerce-details.html"> MacBook Pro</a></h6><small class="cart-item-by">By Apple</small>
-                                            </div>
-                                            <div class="cart-item-qty">
-                                                <div class="input-group">
-                                                    <input class="touchspin-cart" type="number" value="1">
-                                                </div>
-                                            </div>
-                                            <h5 class="cart-item-price">$2,999.00</h5>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="dropdown-menu-footer">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <h6 class="fw-bolder mb-0">Total:</h6>
-                                        <h6 class="text-primary fw-bolder mb-0">$10,999.00</h6>
-                                    </div><a class="btn btn-primary w-100" href="app-ecommerce-checkout.html">Checkout</a>
-                                </li>
-                            </ul>
+                            <CartItems/>
                         </li>
                         <li class="nav-item dropdown dropdown-notification me-25">
                             <a class="nav-link" href="#" data-bs-toggle="dropdown">
@@ -204,20 +122,33 @@
                         </li>
 
 
-                        <li class="nav-item dropdown dropdown-user" v-if="authUser != null">
+                        <li class="nav-item dropdown dropdown-user" v-if="$page.props.auth?.user">
                             <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="user-nav d-sm-flex d-none">
-                                    <span class="user-name fw-bolder">John Doe</span>
-                                    <span class="user-status">Admin</span>
+                                    <span class="user-name fw-bolder">{{ $page.props.auth?.user.name }}</span>
+                                    <span class="user-status">{{ $page.props.auth?.user.name }}</span>
                                 </div><span class="avatar">
                                     <img class="round" src="/frontend/app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="40" width="40">
                                     <span class="avatar-status-online"></span>
                                 </span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
+                                <a class="dropdown-item" href="page-profile.html">
+                                    <i class="me-50" data-feather="user"></i> Profile
+                                </a>
+                                <a class="dropdown-item" href="app-email.html">
+                                    <i class="me-50" data-feather="mail"></i> Inbox
+                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="page-account-settings-account.html">
                                     <i class="me-50" data-feather="settings"></i> Settings
+                                </a>
+                                <a class="dropdown-item" href="page-pricing.html">
+                                    <i class="me-50" data-feather="credit-card"></i> Pricing
+                                </a><a class="dropdown-item" href="page-faq.html">
+                                <i class="me-50" data-feather="help-circle"></i> FAQ</a>
+                                <a class="dropdown-item" :href="$page.props.auth.MAIN_URL+'/logout'">
+                                    <i class="me-50" data-feather="power"></i> Logout
                                 </a>
                             </div>
                         </li>

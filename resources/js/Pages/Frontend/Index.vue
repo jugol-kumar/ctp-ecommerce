@@ -1,7 +1,4 @@
 <script setup>
-    import TopHeader from "../Frontend/Shared/TopHeader.vue"
-    import Header from "../Frontend/Shared/Header.vue"
-    import HeaderMenu from "../Frontend/Shared/HeaderMenu.vue"
     import 'vue3-carousel/dist/carousel.css'
     import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
     import {ref} from 'vue'
