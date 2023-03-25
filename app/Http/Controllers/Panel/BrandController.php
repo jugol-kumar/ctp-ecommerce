@@ -61,6 +61,7 @@ class BrandController extends Controller
         $data =  Request::all();
 
         if (Request::hasFile('icon')){
+
             $type = Request::file('icon')->getClientOriginalExtension();
             $icon = Request::file('icon')->store('uploads/all', 'public');
             if ($type != 'svg' || $type != 'gif'){
@@ -125,7 +126,6 @@ class BrandController extends Controller
             $banner = Request::file('banner')->store('uploads/all', 'public');
             $data['banner'] = $banner;
         }
-
         $brand->update($data);
         return back();
     }

@@ -18,9 +18,6 @@ const gridList = (e) => {
     var $gridCont = document.getElementById('productView');
     $gridCont.classList.remove('list-view');
 }
-
-
-
 </script>
 
 <template>

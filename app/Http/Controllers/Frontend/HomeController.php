@@ -31,4 +31,7 @@ class HomeController extends Controller
         ]);
     }
 
+    public function cartDetails(){
+        return inertia('Frontend/Customer/CartDetails');
+    }
 }

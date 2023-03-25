@@ -7,10 +7,11 @@ namespace App\Http\Helpers;
 class Properties
 {
 
-    public static string $true = "true";
-    public static string $false = "false";
+    public static $true = "true";
+    public static $false = "false";
 
-    public static int $productImageWeight= 350;
-    public static int $productImageHeight= 250;
-
+    public static $productImageWeight= 350;
+    public static $productImageHeight= 250;
+    public static $customer = "Customer";
+    public static $admin = "Admin";
 }

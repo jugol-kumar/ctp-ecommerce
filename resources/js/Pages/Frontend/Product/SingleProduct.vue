@@ -1,11 +1,15 @@
 <script setup>
-import {computed, ref} from 'vue'
+import {computed, ref, onMounted} from 'vue'
 import Layout from "../Shared/Layout.vue";
 import Gallery from "../Modules/Gallery.vue";
 import ProductCarousel from "../Modules/ProductCarousel.vue";
+import {useCartStore} from "../../../Store/useCartStore";
+const store = useCartStore();
 
-
-const props = defineProps({
+    onMounted(() =>{
+        store.initCart();
+    })
+    const props = defineProps({
         product:Object|null,
         color:Object|null,
     })
@@ -29,6 +33,19 @@ const props = defineProps({
         }
         images.push(props.product.thumbnail)
         return images;
+    })
+
+    const cartSize = ref(null);
+    const selectSize = (event) => cartSize.value = event.target.value;
+    const addToCart = (product) =>{
+        if(cartSize.value !== null){
+            store.addToCart({...product, quantity:1, size:cartSize})
+        }else{
+            $toast.warning("Please chose first your needed size...")
+        }
+    }
+    const isInCart = computed(() =>{
+        return store.cart.find(item => item.id === props.product.id)?.quantity
     })
 
 </script>
@@ -89,7 +106,7 @@ const props = defineProps({
                                     <div class="card">
                                         <div class="card-body">
                                             <h4>Size's</h4>
-                                            <select class="select2 form-select" >
+                                            <select class="select2 form-select" @change="selectSize">
                                                 <option value="null" selected disabled>I want this size.</option>
                                                 <option :value="item" v-for="item in JSON.parse(product.sizes)">{{ item }}</option>
                                             </select>
@@ -132,10 +149,16 @@ const props = defineProps({
 
                             <hr />
                             <div class="d-flex flex-column flex-sm-row pt-1">
-                                <a href="#" class="btn btn-primary btn-cart me-0 me-sm-1 mb-1 mb-sm-0 d-flex align-items-center">
+                                <button v-if="isInCart === undefined" @click="addToCart(product)"  class="btn btn-primary btn-cart me-0 me-sm-1 mb-1 mb-sm-0 d-flex align-items-center">
                                     <vue-feather type="shopping-cart" class="me-50"/>
-                                    <span class="add-to-cart">Add to cart</span>
-                                </a>
+                                    <span class="add-to-cart">{{"Add to cart"}}</span>
+                                </button>
+
+                                <button v-else @click="store.incrementQty(product.id)"  class="btn btn-primary btn-cart me-0 me-sm-1 mb-1 mb-sm-0 d-flex align-items-center">
+                                    <vue-feather type="shopping-cart" class="me-50"/>
+                                    <span class="add-to-cart">{{ isInCart+" Item In Cart" }}</span>
+                                </button>
+
                                 <a href="#" class="btn btn-outline-secondary btn-wishlist me-0 me-sm-1 mb-1 mb-sm-0 d-flex align-items-center">
                                     <vue-feather type="heart" class="me-50"/>
                                     <span>Wishlist</span>

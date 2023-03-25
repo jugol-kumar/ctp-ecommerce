@@ -103,6 +103,14 @@
                             </li>
                         </ul>
                     </li>
+
+                    <li class=" nav-item">
+                        <Link preserve-scroll class="d-flex align-items-center" :href="`${this.$page.props.auth.ADMIN_URL}/settings`">
+                            <vue-feather type="settings" />
+                            <span class="menu-title text-truncate" data-i18n="Dashboards">Setting</span>
+                        </Link>
+                    </li>
+
                 </ul>
             </div>
         </perfect-scrollbar>
