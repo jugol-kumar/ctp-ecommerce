@@ -53,16 +53,17 @@ class CheckoutController extends Controller
             "data" => $checkout,
         ]);
 
-        return inertia('Frontend/Customer/Checkout', [
-            "checkOutData" => Session::get('checkoutData'),
-            'info' => [
-                "status"=>200,
-                "message" => 'Checkout Successful, Make Payment Now...'
-            ]]);
 
-//        return redirect()->route('payment')->with([
-//            'checkoutDetails' => $checkout
-//        ]);
+
+
+//        return inertia('Frontend/Customer/Checkout', [
+//            "checkOutData" => Session::get('checkoutData'),
+//            'info' => [
+//                "status"=>200,
+//                "message" => 'Checkout Successful, Make Payment Now...'
+//            ]]);
+
+        return redirect()->route('payment');
     }
 
 }

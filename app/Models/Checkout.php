@@ -17,6 +17,10 @@ class Checkout extends Model
         return $this->belongsTo(CustomerCart::class);
     }
 
+    public function address(){
+        return $this->belongsTo(Address::class);
+    }
+
     protected $dates = [
         'checkout_date'
     ];
