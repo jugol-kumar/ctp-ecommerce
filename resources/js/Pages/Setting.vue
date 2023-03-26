@@ -27,13 +27,22 @@
                                             type="button" role="tab"
                                             aria-controls="v-pills-profile"
                                             aria-selected="false">Profile</button>
-                                    <button class="nav-link" id="v-pills-socials-tab"
+                               <!--     <button class="nav-link" id="v-pills-socials-tab"
                                             data-bs-toggle="pill"
                                             data-bs-target="#v-pills-socials"
                                             type="button" role="tab"
                                             aria-controls="v-pills-socials"
                                             aria-selected="false">Social Links</button>
-
+-->
+                                    <!--           <button class="nav-link"
+                                            id="v-pills-sms_api-tab"
+                                            data-bs-toggle="pill"
+                                            data-bs-target="#v-pills-sms_api"
+                                            type="button" role="tab"
+                                            aria-controls="v-pills-sms_api"
+                                            aria-selected="false">API Setup</button>
+                                    <Link class="nav-link" :href="`${this.$page.props.ADMIN_URL}/admin-profile`">Profile Settings</Link>
+-->
                                     <button class="nav-link"
                                             id="v-pills-messages-tab"
                                             data-bs-toggle="pill"
@@ -42,14 +51,6 @@
                                             aria-controls="v-pills-messages"
                                             aria-selected="false">Apprience</button>
 
-                                    <button class="nav-link"
-                                            id="v-pills-sms_api-tab"
-                                            data-bs-toggle="pill"
-                                            data-bs-target="#v-pills-sms_api"
-                                            type="button" role="tab"
-                                            aria-controls="v-pills-sms_api"
-                                            aria-selected="false">API Setup</button>
-                                    <Link class="nav-link" :href="`${this.$page.props.ADMIN_URL}/admin-profile`">Profile Settings</Link>
 
                                     <button class="nav-link"
                                             id="v-pills-shipping_api-tab"
@@ -58,6 +59,17 @@
                                             type="button" role="tab"
                                             aria-controls="v-pills-shipping"
                                             aria-selected="false">Shipping Setup</button>
+
+
+
+                                    <button class="nav-link"
+                                            id="v-pills-home_cats-tab"
+                                            data-bs-toggle="pill"
+                                            data-bs-target="#v-pills-home_cats"
+                                            type="button" role="tab"
+                                            aria-controls="v-pills-home_cats"
+                                            aria-selected="false">Home Categories</button>
+
                                 </div>
                             </div>
                             <div class="col-md-9">
@@ -69,28 +81,10 @@
                                                 <form class="form form-vertical" @submit.prevent="updateBuisnessSetting()">
                                                     <div class="row">
                                                         <div class="col-12">
-                                                            <input class="form-control" type="text" v-model="createForm.name" label="App Name" placeholder="App Name" />
+                                                            <input class="form-control mb-1" type="text" v-model="createForm.name" label="App Name" placeholder="App Name" />
                                                         </div>
                                                         <div class="col-12">
-                                                            <textarea class="form-control" v-model="createForm.app_details"></textarea>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label>Select Timezone</label>
-                                                            <v-select
-                                                                v-model="createForm.timezone"
-                                                                dir="ltr"
-                                                                label="tz"
-                                                                :options="options"
-                                                                placeholder="~~ Select Timezone ~~"/>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label>Select Country</label>
-                                                            <v-select
-                                                                v-model="createForm.country"
-                                                                dir="ltr"
-                                                                label="name"
-                                                                :options="countries"
-                                                                placeholder="~~ Select Timezone ~~"/>
+                                                            <textarea class="form-control mb-1" v-model="createForm.app_details" placeholder="e.g Discribe some details about your application..."></textarea>
                                                         </div>
 
 
@@ -118,15 +112,15 @@
                                                 <form class="form form-vertical" @submit.prevent="updateBuisnessSetting()">
                                                     <div class="row">
                                                         <div class="col-12">
-                                                            <input  type="text" v-model="createForm.address" label="App Address" placeholder="App Address" />
+                                                            <input  type="text" class="form-control mb-1" v-model="createForm.address" label="App Address" placeholder="Address" />
                                                         </div>
 
                                                         <div class="col-12">
-                                                            <input type="email" v-model="createForm.email" label="App Email" placeholder="example@yourdomain.com" />
+                                                            <input type="email" class="form-control mb-1" v-model="createForm.email" label="App Email" placeholder="example@yourdomain.com" />
                                                         </div>
 
                                                         <div class="col-12">
-                                                            <input type="text" v-model="createForm.phone" label="App Number" placeholder="+8801*-******" />
+                                                            <input type="text" class="form-control mb-1" v-model="createForm.phone" label="App Number" placeholder="+8801*-******" />
                                                         </div>
 
                                                         <div class="col-12 mt-2 d-inline-flex align-item-center">
@@ -146,7 +140,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="v-pills-socials" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+
+                                <!--    <div class="tab-pane fade" id="v-pills-socials" role="tabpanel" aria-labelledby="v-pills-settings-tab">
                                         <div class="card">
                                             <h2>App Profile</h2>
                                             <div class="card-body">
@@ -181,10 +176,10 @@
 
                                                         <div class="col-12 mt-2 d-inline-flex align-item-center">
 
-                                                            <!--                                                            <button v-if="!isLoding" type="submit" disabled class="btn btn-primary me-1 waves-effect waves-float waves-light">-->
-                                                            <!--                                                                <div class="spinner-border text-white me-1"  role="status"></div>-->
-                                                            <!--                                                                <span>Submit</span>-->
-                                                            <!--                                                            </button>-->
+                                                            &lt;!&ndash;                                                            <button v-if="!isLoding" type="submit" disabled class="btn btn-primary me-1 waves-effect waves-float waves-light">&ndash;&gt;
+                                                            &lt;!&ndash;                                                                <div class="spinner-border text-white me-1"  role="status"></div>&ndash;&gt;
+                                                            &lt;!&ndash;                                                                <span>Submit</span>&ndash;&gt;
+                                                            &lt;!&ndash;                                                            </button>&ndash;&gt;
 
 
                                                             <button class="btn btn-primary me-1 waves-effect waves-float waves-light">
@@ -196,7 +191,93 @@
                                                 </form>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>-->
+                                    <!--      <div class="tab-pane fade" id="v-pills-sms_api" role="tabpanel" aria-labelledby="v-pills-sms_api-tab">
+                                              <div class="card">
+                                                  <h2>SMS API Credentials</h2>
+                                                  <div class="card-body">
+                                                      <form class="form form-vertical" @submit.prevent="updateBuisnessSetting()">
+                                                          <div class="row">
+                                                              <div class="col-md-6">
+                                                                  <div class="row">
+                                                                      <div class="col-12">
+                                                                          <input type="text" v-model="createForm.api_url" label="API URL" placeholder="http://66.45.237.70/api.php" />
+                                                                      </div>
+
+                                                                      <div class="col-12">
+                                                                          <input type="text" v-model="createForm.api_user_name" label="API User Name" placeholder="e.g user name" />
+                                                                      </div>
+
+                                                                      <div class="col-12">
+                                                                          <input type="text" v-model="createForm.api_user_pass" label="Api User Password" placeholder="e.g password" />
+                                                                      </div>
+                                                                  </div>
+                                                              </div>
+
+                                                              <div class="col-md-6">
+                                                                  <table class="table table-bordered table-striped">
+                                                                      <tbody>
+                                                                          <tr>
+                                                                              <th>Status</th>
+                                                                              <th>Message</th>
+                                                                          </tr>
+                                                                          <tr>
+                                                                              <td>1101</td>
+                                                                              <td>Success</td>
+                                                                          </tr>
+                                                                          <tr>
+                                                                              <td>1000</td>
+                                                                              <td>Invalid user or Password</td>
+                                                                          </tr>
+                                                                          <tr>
+                                                                              <td>1002</td>
+                                                                              <td>Empty Number</td>
+                                                                          </tr>
+                                                                          <tr>
+                                                                              <td>1003</td>
+                                                                              <td>Invalid message or empty message</td>
+                                                                          </tr>
+                                                                          <tr>
+                                                                              <td>1004</td>
+                                                                              <td>Invalid number</td>
+                                                                          </tr>
+                                                                          <tr>
+                                                                              <td>1005</td>
+                                                                              <td>All Number is Invalid</td>
+                                                                          </tr>
+                                                                          <tr>
+                                                                              <td>1006</td>
+                                                                              <td>insufficient Balance</td>
+                                                                          </tr>
+                                                                          <tr>
+                                                                              <td>1009</td>
+                                                                              <td> Inactive Account</td>
+                                                                          </tr>
+                                                                          <tr>
+                                                                              <td>1010</td>
+                                                                              <td>Max number limit exceeded</td>
+                                                                          </tr>
+                                                                      </tbody>
+                                                                  </table>
+                                                              </div>
+
+
+                                                              <div class="col-12 mt-2 d-inline-flex align-item-center">
+                                                                  <button v-if="!isLoding" type="submit" disabled class="btn btn-primary me-1 waves-effect waves-float waves-light">
+                                                                      <div class="spinner-border text-white me-1"  role="status"></div>
+                                                                      <span>Submit</span>
+                                                                  </button>
+                                                                  <button class="btn btn-primary me-1 waves-effect waves-float waves-light">
+                                                                      Submit
+                                                                  </button>
+                                                                  <button type="reset" class="btn btn-outline-secondary waves-effect">Reset</button>
+                                                              </div>
+                                                          </div>
+                                                      </form>
+                                                  </div>
+                                              </div>
+                                          </div>
+      -->
                                     <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                                         <div class="card">
                                             <h2>Frontend Setup</h2>
@@ -234,91 +315,6 @@
                                                                 <span>Submit</span>
                                                             </button>
                                                             <button v-else class="btn btn-primary me-1 waves-effect waves-float waves-light">
-                                                                Submit
-                                                            </button>
-                                                            <button type="reset" class="btn btn-outline-secondary waves-effect">Reset</button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="v-pills-sms_api" role="tabpanel" aria-labelledby="v-pills-sms_api-tab">
-                                        <div class="card">
-                                            <h2>SMS API Credentials</h2>
-                                            <div class="card-body">
-                                                <form class="form form-vertical" @submit.prevent="updateBuisnessSetting()">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <input type="text" v-model="createForm.api_url" label="API URL" placeholder="http://66.45.237.70/api.php" />
-                                                                </div>
-
-                                                                <div class="col-12">
-                                                                    <input type="text" v-model="createForm.api_user_name" label="API User Name" placeholder="e.g user name" />
-                                                                </div>
-
-                                                                <div class="col-12">
-                                                                    <input type="text" v-model="createForm.api_user_pass" label="Api User Password" placeholder="e.g password" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-6">
-                                                            <table class="table table-bordered table-striped">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <th>Status</th>
-                                                                        <th>Message</th>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>1101</td>
-                                                                        <td>Success</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>1000</td>
-                                                                        <td>Invalid user or Password</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>1002</td>
-                                                                        <td>Empty Number</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>1003</td>
-                                                                        <td>Invalid message or empty message</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>1004</td>
-                                                                        <td>Invalid number</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>1005</td>
-                                                                        <td>All Number is Invalid</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>1006</td>
-                                                                        <td>insufficient Balance</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>1009</td>
-                                                                        <td> Inactive Account</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>1010</td>
-                                                                        <td>Max number limit exceeded</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-
-
-                                                        <div class="col-12 mt-2 d-inline-flex align-item-center">
-                                                            <button v-if="!isLoding" type="submit" disabled class="btn btn-primary me-1 waves-effect waves-float waves-light">
-                                                                <div class="spinner-border text-white me-1"  role="status"></div>
-                                                                <span>Submit</span>
-                                                            </button>
-                                                            <button class="btn btn-primary me-1 waves-effect waves-float waves-light">
                                                                 Submit
                                                             </button>
                                                             <button type="reset" class="btn btn-outline-secondary waves-effect">Reset</button>
@@ -389,6 +385,35 @@
                                         </div>
                                     </div>
 
+                                    <div class="tab-pane fade" id="v-pills-home_cats" role="tabpanel" aria-labelledby="v-pills-home_cats">
+                                        <div class="card">
+                                            <h2>Add Some Categories</h2>
+                                            <div class="card-body">
+                                                <form class="form form-vertical" @submit.prevent="updateBuisnessSetting()">
+                                                    <div class="">
+                                                        <label class="label card-text">Shipping Config</label>
+                                                        <vSelect :options="formattedParentCategories"
+                                                                 multiple
+                                                                 v-model="createForm.categoryId" label="label"
+                                                                 :reduce="item =>item.value.id"
+                                                                 placeholder="e.g Select Category">
+                                                            <template v-slot:option="option">
+                                                                <li class="d-flex align-items-start py-1">
+                                                                    <div class="d-flex align-items-center justify-content-between w-100">
+                                                                        <div class="me-1 d-flex flex-column">
+                                                                            <h6 class="mb-25">{{ option.label }}</h6>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </template>
+                                                        </vSelect>
+                                                    </div>
+                                                    <button class="btn btn-primary mt-1">Submit Settings</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -425,7 +450,7 @@ import Modal from '../components/Modal.vue'
 import Layout from "../Shared/Layout.vue";
 
 import { usePage, useForm } from '@inertiajs/inertia-vue3'
-import {ref} from "vue"
+import {computed, ref} from "vue"
 import timezone from "../Store/timezone";
 
 const APP_URL = usePage().props.value.ADMIN_URL;
@@ -436,6 +461,7 @@ let props = defineProps({
     errors:"",
     bSettings:"",
     main_url:String|null,
+    categories:[]|null,
 })
 
 let countries = props.countries;
@@ -475,6 +501,8 @@ let createForm = useForm({
     inSizeDhaka:null,
     outSizeDhaka:null,
     shippingType:null,
+
+    categoryId:[],
 
 })
 
@@ -528,7 +556,32 @@ let updateLogo = () =>{
     });
 }
 
+const renderOptionGroup = (categories, prefix = '') => {
+    return categories.map((category) => {
 
+        let cValue = '';
+        for (let i = 0; i < category.order_level; i++) {
+            cValue += '--';
+        }
+        const label = `${cValue}${category.title}`;
+        if (category.children && category.children.length > 0) {
+            const childPrefix = `${prefix}\xa0\xa0\xa0`;
+            return {
+                label,
+                options: renderOptionGroup(category.children, childPrefix),
+            };
+        } else {
+            const value = {...category};
+            return {
+                label,
+                value,
+            };
+        }
+    });
+};
+const formattedParentCategories = computed(() => {
+    return renderOptionGroup(props.categories);
+});
 </script>
 
 <style scoped>

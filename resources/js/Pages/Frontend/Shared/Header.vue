@@ -14,14 +14,14 @@
                 <a href="/">
                     <img src="../../../../images/logo.png" height="40" alt="">
                 </a>
-                <div class="card m-0 shadow-none">
+         <!--       <div class="card m-0 shadow-none">
                     <div class="card-body p-0 d-flex">
                         <select class="form-control border-0" name="" id="" >
                             <option selected>Category</option>
                         </select>
                         <input type="text" class="form-control border-0" placeholder="Find your needs">
                     </div>
-                </div>
+                </div>-->
 
                 <div>
                     <ul class="nav navbar-nav align-items-center ms-auto">

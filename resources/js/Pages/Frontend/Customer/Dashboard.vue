@@ -63,8 +63,8 @@
 
     const wishListToCart= (item) =>{
         cartStore.addToCart(item);
-        // store.removeFromWishList(item);
-        // $toast.success("Moved Wishlist To Cart...")
+        store.removeFromWishList(item);
+        $toast.success("Moved Wishlist To Cart...")
     }
 
 

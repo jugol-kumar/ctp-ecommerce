@@ -9,13 +9,9 @@ export const useCartStore = defineStore('cart',{
 
     actions:{
         addToCart(product){
-            const index = this.cart.indexOf(product)
+            const index = this.cart.findIndex(item => item.id === product.id);
             if (index > -1) {
-                const itemIndex = this.cart.findIndex(item => item.id === product.id);
-
-                console.log(itemIndex)
-
-                // this.cart[itemIndex].quantity++;
+                this.cart[index].quantity++;
             }else{
                 this.cart.push(product);
             }

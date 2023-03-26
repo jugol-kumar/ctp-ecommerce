@@ -10,6 +10,8 @@ use App\Http\Controllers\Panel\CategoryController;
 use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\OrderController;
 use App\Http\Controllers\Panel\ProductController;
+
+use App\Http\Controllers\Panel\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -26,12 +28,14 @@ use App\Http\Controllers\Auth\LoginController;
 
 Route::controller(HomeController::class)->name('frontend.')->group(function(){
     Route::get('/', 'home')->name('home');
-    Route::get('/product/single-product/{slug}', 'singleProduct')->name('singleProduct');
-
     Route::get('/cart-details', 'cartDetails')->name('cartDetails');
-
     Route::get('/fetch-top-categories', 'fetchTopCategories')->name('fetchTopCategories');
     Route::get('/fetch-featured-categories', 'fetchFeaturedCategories')->name('fetchFeaturedCategories');
+});
+
+Route::controller(App\Http\Controllers\Frontend\ProductController::class)->name('product.')->group(function(){
+    Route::get('/products', 'products')->name('products');
+    Route::get('/product/single-product/{slug}', 'singleProduct')->name('singleProduct');
 });
 
 Route::middleware('customer')->group(function(){
@@ -90,6 +94,10 @@ Route::prefix('panel')->name('admin.')->middleware(['auth','web', 'admin'])->gro
         Route::get('/change-payment-status/{id}', 'changePaymentStatus')->name('changePaymentStatus');
     });
 
+    // manage users
+    Route::get('/users', [UserController::class, 'index'])->name('user.index');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+
     Route::get('/settings', [BusinessSettingController::class, 'index'])->name('businessIndex');
     Route::post('/settings', [BusinessSettingController::class, 'updateSetting'])->name('businessSave');
 
@@ -109,5 +117,10 @@ Route::get('/chart', function () {
 });
 
 Route::get('/chat', function (){
-    return "chat page";
+    return \App\Models\Product::with('active_color')->get()->groupBy('active_color');
 });
+
+
+
+Route::get('/trams', [HomeController::class, 'trams'])->name('trams');
+Route::get('/policy', [HomeController::class, 'policy'])->name('policy');

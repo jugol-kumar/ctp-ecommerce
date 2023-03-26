@@ -30,7 +30,7 @@
                 <ul class="dropdown-menu dropdown-menu-media dropdown-menu-start zindex-1 py-0">
 <!--                    :style="{ backgroundImage: 'url(' + category.banner + ')' }" for backdrop filter background style -->
                     <li class="scrollable-container media-list"  v-for="category in store.getTopCategories" :key="`item-${category.id}`">
-                        <a class="d-flex" href="#">
+                        <a class="d-flex" :href="`${$page.props.auth.MAIN_URL}/products?category_slug=${category.slug}`">
                             <div class="list-item border-bottom d-flex align-items-start">
                                 <div class="me-1">
                                     <img :src="category.icon" alt="avatar" width="32" height="32">

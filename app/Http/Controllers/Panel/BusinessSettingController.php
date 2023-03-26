@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\BusinessSetting;
+use App\Models\Category;
 use App\Models\Country;
 use App\Models\Gallery;
 use Illuminate\Support\Facades\Cache;
@@ -19,6 +20,7 @@ class BusinessSettingController extends Controller
 
         return inertia('Setting', [
             'main_url' => URL::route('admin.businessSave'),
+            'categories' => Category::with('childrens')->get(),
             'bSettings' =>[
                 'name'        => get_setting('name'),
                 'details'     => get_setting('app_details'),

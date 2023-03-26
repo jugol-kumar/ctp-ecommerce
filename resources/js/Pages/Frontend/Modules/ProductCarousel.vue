@@ -43,6 +43,10 @@
     })
     const settings = {itemsToShow: 1, snapAlign: 'center'}
     const breakpoints = {
+        360: {
+            itemsToShow: 2,
+                snapAlign: 'end',
+        },
         700: {
             itemsToShow: 3,
                 snapAlign: 'end',
