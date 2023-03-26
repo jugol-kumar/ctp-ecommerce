@@ -24,7 +24,7 @@
     <Head title="Home Page">
 
     </Head>
-    <Layout>
+    <Layout :parentCategories="props.parentCategories">
         <section id="dashboard-ecommerce">
         <div class="row match-height my-2">
             <div class="col-xl-12 col-md-12 col-12">
@@ -73,7 +73,7 @@
     </Layout>
 </template>
 
-<style scoped>
+<style>
 
 /*.carousel__item {*/
 /*    min-height: 400px;*/
@@ -84,9 +84,10 @@
 /*    border-radius: 8px;*/
 /*}*/
 
-/*.carousel__item img{*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*}*/
+.carousel__item, .carousel__item img{
+    width: 100% !important;
+    height: 100% !important;
+}
+
 
 </style>
