@@ -4,10 +4,13 @@ import Layout from "../Shared/Layout.vue";
 import Gallery from "../Modules/Gallery.vue";
 import ProductCarousel from "../Modules/ProductCarousel.vue";
 import {useCartStore} from "../../../Store/useCartStore";
+import {useWishListStore} from "../../../Store/useWishListStore";
 const store = useCartStore();
+const watchlistStore = useWishListStore();
 
     onMounted(() =>{
         store.initCart();
+        watchlistStore.initWishList();
     })
     const props = defineProps({
         product:Object|null,
@@ -47,6 +50,17 @@ const store = useCartStore();
     const isInCart = computed(() =>{
         return store.cart.find(item => item.id === props.product.id)?.quantity
     })
+
+
+    const addToWishList = (product) =>{
+        if(cartSize.value !== null){
+            watchlistStore.addToWishList({...product, quantity:1, size:cartSize})
+        }else{
+            $toast.warning("Please chose first your needed size...")
+        }
+    }
+
+
 
 </script>
 
@@ -159,11 +173,19 @@ const store = useCartStore();
                                     <span class="add-to-cart">{{ isInCart+" Item In Cart" }}</span>
                                 </button>
 
-                                <a href="#" class="btn btn-outline-secondary btn-wishlist me-0 me-sm-1 mb-1 mb-sm-0 d-flex align-items-center">
+
+                                <button @click="watchlistStore.removeFromWishList(product)" v-if="watchlistStore.wishList.find(item => item.id === product.id)" class="btn btn-outline-secondary btn-wishlist me-0 me-sm-1 mb-1 mb-sm-0 d-flex align-items-center">
                                     <vue-feather type="heart" class="me-50"/>
-                                    <span>Wishlist</span>
-                                </a>
-                                <div class="btn-group dropdown-icon-wrapper btn-share">
+                                    <span>Remove Form Wishlist</span>
+                                </button>
+
+                                <button @click="addToWishList(product)" v-else class="btn btn-outline-secondary btn-wishlist me-0 me-sm-1 mb-1 mb-sm-0 d-flex align-items-center">
+                                    <vue-feather type="heart" class="me-50"/>
+                                    <span>Add To Wishlist</span>
+                                </button>
+
+
+<!--                                <div class="btn-group dropdown-icon-wrapper btn-share">
                                     <button type="button" class="btn btn-icon hide-arrow btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <vue-feather type="share-2"></vue-feather>
                                     </button>
@@ -181,7 +203,7 @@ const store = useCartStore();
                                             <span class="add-to-cart ms-1">Facebook</span>
                                         </a>
                                     </div>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                     </div>

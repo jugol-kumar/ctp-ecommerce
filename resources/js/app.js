@@ -11,9 +11,6 @@ import {resolvePageComponent} from "laravel-vite-plugin/inertia-helpers";
 // import('../sass/app.scss')
 let vbPlugin = createVbPlugin({ Alert, Button, Carousel, Collapse, Dropdown, Modal, Offcanvas, Popover, ScrollSpy, Tab, Toast, Tooltip})
 
-
-
-
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
 import coreUi from '@coreui/vue'

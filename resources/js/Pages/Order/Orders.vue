@@ -58,12 +58,17 @@
                                 {{ order.item.cart_total_price }} ৳
                             </td>
                             <td>
-                                <span class="badge bg-light-primary">{{ order.item.order_status }}</span>
+                                <span class="badge bg-light-primary text-capitalize">{{ order.item.order_status }}</span>
                             </td>
-                            <td>{{ order.item.payment_method }}</td>
+                            <td class="text-uppercase">{{ order.item.payment_method }}</td>
 
                             <td>
-                                <span class="badge bg-light-primary">{{ order.item.payment_status }}</span>
+                                <span class="badge bg-light-primary text-capitalize">{{ order.item.payment_status }}</span>
+                            </td>
+                            <td>
+                                <a :href="$page.props.auth.ADMIN_URL+'/single-order/'+order.item.id" class="btn  btn-icon btn-primary btn-sm">
+                                    <vue-feather type="eye"/>
+                                </a>
                             </td>
                         </tr>
                         </tbody>

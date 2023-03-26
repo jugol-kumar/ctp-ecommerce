@@ -29,6 +29,9 @@ Route::controller(HomeController::class)->name('frontend.')->group(function(){
     Route::get('/product/single-product/{slug}', 'singleProduct')->name('singleProduct');
 
     Route::get('/cart-details', 'cartDetails')->name('cartDetails');
+
+    Route::get('/fetch-top-categories', 'fetchTopCategories')->name('fetchTopCategories');
+    Route::get('/fetch-featured-categories', 'fetchFeaturedCategories')->name('fetchFeaturedCategories');
 });
 
 Route::middleware('customer')->group(function(){
@@ -40,6 +43,9 @@ Route::middleware('customer')->group(function(){
     Route::get('/select-payment', [PaymentController::class, 'payment'])->name('payment');
     Route::post('/make-payment', [PaymentController::class, 'makePayment'])->name('makePayment');
     Route::get('/make-payment', [PaymentController::class, 'orderComplete'])->name('orderComplete');
+
+    Route::post('/update-user-profile', [CustomerController::class, 'updateProfile'])->name('updateProfile');
+    Route::post('/update-user-credentials', [CustomerController::class, 'updatePassword'])->name('updatePassword');
 });
 
 Route::prefix('customer')->name('customer.')->middleware( 'guest')->group(function (){
@@ -79,6 +85,9 @@ Route::prefix('panel')->name('admin.')->middleware(['auth','web', 'admin'])->gro
     // customer orders
     Route::controller(OrderController::class)->name('order.')->group(function(){
         Route::get('/orders', 'index')->name('index');
+        Route::get('/single-order/{id}', 'singleOrder')->name('singleOrder');
+        Route::get('/change-order-status/{id}', 'changeOrderStatus')->name('changeOrderStatus');
+        Route::get('/change-payment-status/{id}', 'changePaymentStatus')->name('changePaymentStatus');
     });
 
     Route::get('/settings', [BusinessSettingController::class, 'index'])->name('businessIndex');

@@ -9,7 +9,16 @@ export const useCartStore = defineStore('cart',{
 
     actions:{
         addToCart(product){
-            this.cart.push(product);
+            const index = this.cart.indexOf(product)
+            if (index > -1) {
+                const itemIndex = this.cart.findIndex(item => item.id === product.id);
+
+                console.log(itemIndex)
+
+                // this.cart[itemIndex].quantity++;
+            }else{
+                this.cart.push(product);
+            }
             this.setInLocalStorage();
         },
         removeFromCart(item) {

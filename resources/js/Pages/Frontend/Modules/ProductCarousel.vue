@@ -9,7 +9,7 @@
                     <h2>
                         <a class="text-primary" :href="`${$page.props.auth.MAIN_URL}/product/single-product/${item.slug}`">{{ item.title.slice(0, 28) }}</a>
                     </h2>
-                    <h6 class="item-price">$339.99</h6>
+                    <h6 class="item-price">{{ item.price }} ৳</h6>
                     <p class="card-text  item-description" v-html="`${item.description.slice(0, 50)}...`"></p>
                 </div>
             </div>
@@ -25,7 +25,7 @@
     import { defineComponent } from 'vue'
     import { Carousel, Navigation, Slide, Pagination } from 'vue3-carousel'
     import 'vue3-carousel/dist/carousel.css'
-
+    import ProductCard from "./ProductCard.vue";
 
     const props = defineProps({
         products:{

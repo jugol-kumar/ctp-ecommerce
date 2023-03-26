@@ -31,4 +31,32 @@ class OrderController extends Controller
 
         ]);
     }
+
+    public function singleOrder($id){
+        $order = Order::findOrFail($id)->load('orderDetails', 'customer', 'address', 'orderDetails.product');
+        return inertia('Order/OrderDetails',[
+            'order' => $order,
+            'url' => [
+                'oSChange' => URL::route('admin.order.changeOrderStatus', $order->id),
+                'pSChange' => URL::route('admin.order.changePaymentStatus', $order->id)
+            ]
+        ]);
+    }
+
+    public function changeOrderStatus($id){
+        $order = Order::findOrFail($id);
+        $order->update(['order_status' => Request::input('status')]);
+        return back();
+    }
+
+    public function changePaymentStatus($id){
+        $order = Order::findOrFail($id);
+        $order->update(['payment_status' => Request::input('status')]);
+        return back();
+    }
+
+
+
+
+
 }

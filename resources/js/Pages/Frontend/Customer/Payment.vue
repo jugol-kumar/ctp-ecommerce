@@ -29,29 +29,36 @@
 
     const isLoading = ref(false)
     const submitPayment = ()=>{
-        formData.post(props.make_payment,{
-            preserveState: true,
-            replace: true,
-            onStart: res => {
-                isLoading.value = true;
-            },
+        if (formData.tramsPolicy === null){
+            $toast.warning("Please check our trams and policies.")
+        }else if(formData.paymentMethod === null){
+            $toast.warning("Please select your payment method.")
+        }else{
+            formData.post(props.make_payment,{
+                preserveState: true,
+                replace: true,
+                onStart: res => {
+                    isLoading.value = true;
+                },
 
-            onSuccess: page => {
-                isLoading.value = false;
-                isPaymentPage.value = true;
+                onSuccess: page => {
+                    isLoading.value = false;
+                    isPaymentPage.value = true;
 
-                $sToast.fire({
-                    icon: 'success',
-                    title: page.props.info.message,
-                })
-            },
+                    $sToast.fire({
+                        icon: 'success',
+                        title: page.props.info.message,
+                    })
+                },
 
-            onError: errors => {
-                document.getElementById('actionModal').$vb.modal.hide()
-                isLoading.value = false;
-                $toast.error("Validation Errors...")
-            }
-        })
+                onError: errors => {
+                    document.getElementById('actionModal').$vb.modal.hide()
+                    isLoading.value = false;
+                    $toast.error("Validation Errors...")
+                }
+            })
+        }
+
     }
 
 
@@ -134,7 +141,7 @@
                                 <hr>
 
                                 <dt class="col-6">Total</dt>
-                                <dd class="col-6 fw-semibold text-end mb-0">৳ {{ props.checkoutData?.data?.cart_total_price + props.checkoutData?.data?.delivery_charge }}</dd>
+                                <dd class="col-6 fw-semibold text-end mb-0">৳ {{ parseInt(props.checkoutData?.data?.cart_total_price) + parseInt(props.checkoutData?.data?.delivery_charge) }}</dd>
 
                             </dl>
                         </div>

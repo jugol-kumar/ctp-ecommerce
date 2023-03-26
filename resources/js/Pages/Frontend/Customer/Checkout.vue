@@ -24,9 +24,6 @@
     const deliveryPrice = ref(0);
     const deliveryCharge = (event) =>{
         if (props.shippingType === 'p'){
-
-
-            console.log(event)
             if(event.name === 'Dhaka'){
                 deliveryPrice.value = props.shippingPrice['inDhaka']
             }else {
@@ -134,7 +131,6 @@
                                                      v-model="formData.city"
                                                      @update:modelValue="deliveryCharge($event)"
                                                      label="name"
-                                                     :reduce="item => item.id"
                                                      placeholder="e.g Select City">
                                                 <template v-slot:option="option">
                                                     <li class="d-flex align-items-start py-1">

@@ -34,7 +34,7 @@
                     <vue-feather class="ficon cart-item-remove" type="x" @click="store.removeFromCart(item)"/>
                     <div class="media-heading">
                         <h6 class="cart-item-title">
-                            <a class="text-body" href="app-ecommerce-details.html">{{ item.title }}</a>
+                            <a class="text-body"  :href="`${$page.props.auth.MAIN_URL}/product/single-product/${item.slug}`">{{ item.title }}</a>
                         </h6>
                         <small class="cart-item-by">
                             <vue-feather type="x" size="10"/>
@@ -44,8 +44,8 @@
                     <h5 class="cart-item-price">৳ {{ item.price * item.quantity }}</h5>
                 </div>
             </div>
-
         </li>
+
         <li class="dropdown-menu-footer">
             <div class="d-flex justify-content-between mb-1">
                 <h6 class="fw-bolder mb-0">Total:</h6>

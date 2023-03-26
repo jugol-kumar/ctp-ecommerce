@@ -16,8 +16,8 @@ class HomeController extends Controller
     {
         return inertia("Frontend/Index",[
             'parentCategories' => Category::with(['childrens', 'parent'])->get(),
-            'featuredCategories' => Category::where('featured', Properties::$true)->get(),
-            'topCategories' => Category::where('top', Properties::$true)->with('products')->get(),
+            'featuredCategories' => Category::where('featured', 1)->get(),
+            'topCategories' => Category::where('top', 1)->with('products')->get(),
             'featuredBrands' => Brand::with('products')->get(),
         ]);
     }
@@ -30,6 +30,15 @@ class HomeController extends Controller
             "color" => $color
         ]);
     }
+
+    public function fetchTopCategories(){
+        return Category::with('childrens')->where('top', 1)->latest()->take(10)->get();
+    }
+    public function fetchFeaturedCategories(){
+        return Category::with('childrens')->whereNull('parent_id')->latest()->take(10)->get();
+
+    }
+
 
     public function cartDetails(){
         return inertia('Frontend/Customer/CartDetails');

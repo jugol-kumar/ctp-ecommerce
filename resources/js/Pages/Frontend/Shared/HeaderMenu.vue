@@ -1,7 +1,20 @@
 <script setup>
+
+    import {useDataStore} from "../../../Store/useDataStore";
+    import {onMounted} from "vue";
+
     defineProps({
         categories:Array
     })
+
+    const store = useDataStore();
+
+    onMounted(() =>{
+        store.initTopCategories();
+        store.initFeaturedCategories();
+    })
+
+
 
 </script>
 
@@ -16,7 +29,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-media dropdown-menu-start zindex-1 py-0">
 <!--                    :style="{ backgroundImage: 'url(' + category.banner + ')' }" for backdrop filter background style -->
-                    <li class="scrollable-container media-list"  v-for="category in categories" :key="`item-${category.id}`">
+                    <li class="scrollable-container media-list"  v-for="category in store.getTopCategories" :key="`item-${category.id}`">
                         <a class="d-flex" href="#">
                             <div class="list-item border-bottom d-flex align-items-start">
                                 <div class="me-1">
@@ -38,17 +51,8 @@
                     <div class="container-fluid">
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li class="nav-item">
-                                    <a class="nav-link text-capitalize fw-bolder fs-3 text-black mx-2" href="#">Link</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-capitalize fw-bolder fs-3 text-black mx-2" href="#">Link</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-capitalize fw-bolder fs-3 text-black mx-2" href="#">Link</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-capitalize fw-bolder fs-3 text-black mx-2" href="#">Link</a>
+                                <li class="nav-item" v-for="item in store.getTopCategories">
+                                    <a class="nav-link text-capitalize fw-bolder fs-3 text-black mx-2" href="#">{{ item.title }}</a>
                                 </li>
                             </ul>
                         </div>

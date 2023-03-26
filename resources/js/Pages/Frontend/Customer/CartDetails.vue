@@ -46,6 +46,7 @@
                     <div class="border rounded p-3 mb-3">
 
                         <!-- Offer -->
+<!--
                         <h6>Offer</h6>
                         <div class="row g-3 mb-3">
                             <div class="col-8 col-xxl-8 col-xl-12">
@@ -57,9 +58,10 @@
                                 </div>
                             </div>
                         </div>
+-->
 
 
-                        <hr class="mx-n3">
+<!--                        <hr class="mx-n3">-->
 
                         <!-- Price Details -->
                         <h6>Price Details</h6>
@@ -74,11 +76,11 @@
                             <dd class="col-6 text-end">$1100.00</dd>-->
 
 
-                            <dt class="col-6 fw-normal">Vat</dt>
+<!--                            <dt class="col-6 fw-normal">Vat</dt>
                             <dd class="col-6 text-end">৳ 5.00 </dd>
 
                             <dt class="col-6 fw-normal">Tax</dt>
-                            <dd class="col-6 text-end">৳ 5.00 </dd>
+                            <dd class="col-6 text-end">৳ 5.00 </dd>-->
 
                             <hr>
 
