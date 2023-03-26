@@ -88,7 +88,7 @@
         <!-- Address -->
             <div class="row">
                 <!-- Address left -->
-                <div class="col-xl-9 mb-3 mb-xl-0" v-if="isPaymentPage">
+                <div class="col-xl-9 mb-3 mb-xl-0" v-if="checkOutData !== undefined">
                     <!-- Select address -->
                     <p>Provide Your Shipping Detail's</p>
                     <div class="row mb-3">

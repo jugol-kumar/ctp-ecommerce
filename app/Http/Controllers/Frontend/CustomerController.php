@@ -36,7 +36,9 @@ class CustomerController extends Controller
 
 
     public function dashboard(){
-        return inertia('Frontend/Customer/Dashboard');
+        return inertia('Frontend/Customer/Dashboard',[
+            'orders' => Auth::user()->load('orders'),
+        ]);
     }
 
 

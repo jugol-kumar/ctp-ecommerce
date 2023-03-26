@@ -1,12 +1,13 @@
 <script setup>
     import Layout from "../../Frontend/Shared/Layout.vue";
     import {Inertia} from "@inertiajs/inertia";
-    import {onMounted} from "vue";
+    import {onMounted, ref} from "vue";
     import {useCartStore} from "../../../Store/useCartStore";
+    import {useForm} from "@inertiajs/inertia-vue3";
     const props = defineProps({
         make_payment:null,
         info:[]|null,
-        checkoutDetails:null,
+        checkoutData:null,
     })
     const store = useCartStore();
 
@@ -21,6 +22,39 @@
         $toast.success(props.info["message"])
     })
 
+    const formData = useForm({
+        tramsPolicy:null,
+        paymentMethod:null,
+    })
+
+    const isLoading = ref(false)
+    const submitPayment = ()=>{
+        formData.post(props.make_payment,{
+            preserveState: true,
+            replace: true,
+            onStart: res => {
+                isLoading.value = true;
+            },
+
+            onSuccess: page => {
+                isLoading.value = false;
+                isPaymentPage.value = true;
+
+                $sToast.fire({
+                    icon: 'success',
+                    title: page.props.info.message,
+                })
+            },
+
+            onError: errors => {
+                document.getElementById('actionModal').$vb.modal.hide()
+                isLoading.value = false;
+                $toast.error("Validation Errors...")
+            }
+        })
+    }
+
+
 
 </script>
 
@@ -30,138 +64,79 @@
             <!-- Payment -->
             <div id="checkout-payment" class="content fv-plugins-bootstrap5 fv-plugins-framework">
                 <div class="row">
-                    <!-- Payment left -->
-                    <div class="col-xl-9 mb-3 mb-xl-0">
-                        <!-- Offer alert -->
-                        <div class="alert alert-success" role="alert">
-                            <div class="d-flex gap-3">
-                                <div class="flex-shrink-0">
-                  <span class="badge badge-center rounded-pill bg-success border-label-success p-3 me-2">
-                    <i class="bx bx-sm bx-purchase-tag fs-4"></i>
-                  </span>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div class="fw-bold">Bank Offers</div>
-                                    <ul class="list-unstyled mb-0">
-                                        <li> - 10% Instant Discount on Bank of America Corp Bank Debit and Credit cards</li>
-                                    </ul>
+
+
+                    <div class="col-xl-6 mb-3 mb-xl-0 mx-auto">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Select your payment method</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row custom-options-checkable g-1 match-height">
+                                    <div class="col-md">
+                                        <input class="custom-option-item-check" v-model="formData.paymentMethod"
+                                               type="radio" name="customOptionsCheckableRadiosWithIcon"
+                                               id="customOptionsCheckableRadiosWithIcon1" value="ssl" checked="">
+                                        <label class="custom-option-item text-center p-1" for="customOptionsCheckableRadiosWithIcon1">
+                                            <img src="../../../../images/ssl.png" width="200" class="p-1"/>
+                                            <span class="custom-option-item-title h4 d-block">SSl Commerz</span>
+                                            <small>I want to pay by SSl Commerz</small>
+                                        </label>
+                                    </div>
+
+                                    <div class="col-md">
+                                        <input class="custom-option-item-check" v-model="formData.paymentMethod" type="radio"
+                                               name="customOptionsCheckableRadiosWithIcon"
+                                               id="customOptionsCheckableRadiosWithIcon2"
+                                               value="cod">
+                                        <label class="custom-option-item text-center text-center p-1" for="customOptionsCheckableRadiosWithIcon2">
+                                            <img src="../../../../images/cod.png" width="75" class="p-1"/>
+                                            <span class="custom-option-item-title h4 d-block">Cash On Delivery</span>
+                                            <small>I am happy with cash on delivery</small>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                            <button type="button" class="btn-close btn-pinned" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-check">
+                                <input class="form-check-input" v-model="formData.tramsPolicy"  type="checkbox" id="login">
+                                <label class="form-check-label" for="login">I agree to the
+                                    <a href="">Terms and Conditions</a> ,
+                                    <a href="">Return Policy</a>&
+                                    <a href="">Privacy Policy</a>
+                                </label>
+                            </div>
                         </div>
 
-                        <!-- Payment Tabs -->
-                        <div class="col-xxl-6 col-lg-8">
-                            <ul class="nav nav-pills mb-3" id="paymentTabs" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="pills-cc-tab" data-bs-toggle="pill" data-bs-target="#pills-cc" type="button" role="tab" aria-controls="pills-cc" aria-selected="true">Home</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="pills-cod-tab" data-bs-toggle="pill" data-bs-target="#pills-cod" type="button" role="tab" aria-controls="pills-cod" aria-selected="false" tabindex="-1">Cash On Delivery</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="pills-gift-card-tab" data-bs-toggle="pill" data-bs-target="#pills-gift-card" type="button" role="tab" aria-controls="pills-gift-card" aria-selected="false" tabindex="-1">Gift Card</button>
-                                </li>
-                            </ul>
-                            <div class="tab-content" id="paymentTabsContent">
-                                <!-- Credit card -->
-                                <div class="tab-pane fade show active" id="pills-cc" role="tabpanel" aria-labelledby="pills-cc-tab">
-                                    <div class="row g-3">
-                                        <div class="col-12">
-                                            <label class="form-label w-100" for="paymentCard">Card Number</label>
-                                            <div class="input-group input-group-merge">
-                                                <input id="paymentCard" name="paymentCard" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" aria-describedby="paymentCard2">
-                                                <span class="input-group-text cursor-pointer p-1" id="paymentCard2"><span class="card-type"></span></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <label class="form-label" for="paymentCardName">Name</label>
-                                            <input type="text" id="paymentCardName" class="form-control" placeholder="John Doe">
-                                        </div>
-                                        <div class="col-6 col-md-3">
-                                            <label class="form-label" for="paymentCardExpiryDate">Exp. Date</label>
-                                            <input type="text" id="paymentCardExpiryDate" class="form-control expiry-date-mask" placeholder="MM/YY">
-                                        </div>
-                                        <div class="col-6 col-md-3">
-                                            <label class="form-label" for="paymentCardCvv">CVV Code</label>
-                                            <div class="input-group input-group-merge">
-                                                <input type="text" id="paymentCardCvv" class="form-control cvv-code-mask" maxlength="3" placeholder="654">
-                                                <span class="input-group-text cursor-pointer" id="paymentCardCvv2"><i class="bx bx-help-circle text-muted" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Card Verification Value" data-bs-original-title="Card Verification Value"></i></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <label class="switch">
-                                                <input type="checkbox" class="switch-input">
-                                                <span class="switch-toggle-slider">
-                          <span class="switch-on"></span>
-                          <span class="switch-off"></span>
-                        </span>
-                                                <span class="switch-label">Save card for future billing?</span>
-                                            </label>
-                                        </div>
-                                        <div class="col-12">
-                                            <button type="button" @click="makePayment" class="btn btn-primary btn-next me-sm-3 me-1">Submit</button>
-                                            <button type="reset" class="btn btn-label-secondary">Cancel</button>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <!-- COD -->
-                                <div class="tab-pane fade" id="pills-cod" role="tabpanel" aria-labelledby="pills-cod-tab">
-                                    <p>Cash on Delivery is a type of payment method where the recipient make payment for the order at the time of delivery rather than in advance.</p>
-                                    <button type="button" @click="makePayment" class="btn btn-primary btn-next">Pay On Delivery</button>
-                                </div>
-
-                                <!-- Gift card -->
-                                <div class="tab-pane fade" id="pills-gift-card" role="tabpanel" aria-labelledby="pills-gift-card-tab">
-                                    <h6>Enter Gift Card Details</h6>
-                                    <div class="row g-3">
-                                        <div class="col-12">
-                                            <label for="giftCardNumber" class="form-label">Gift card number</label>
-                                            <input type="number" class="form-control" id="giftCardNumber" placeholder="Gift card number">
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="giftCardPin" class="form-label">Gift card pin</label>
-                                            <input type="number" class="form-control" id="giftCardPin" placeholder="Gift card pin">
-                                        </div>
-                                        <div class="col-12">
-                                            <button type="button" @click="makePayment" class="btn btn-primary btn-next">Redeem Gift Card</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="btn-group mt-5">
+                            <button class="btn btn-primary me-2" @click="submitPayment">Pay Now</button>
+                            <button class="btn btn-outline-dark" @click="cancleOrder">Cancel</button>
                         </div>
                     </div>
+
                     <!-- Address right -->
                     <div class="col-xl-3">
                         <div class="border rounded p-3">
-
+                            <h6>{{ props.checkoutData?.data?.totalItems }} In your bag</h6>
                             <!-- Price Details -->
                             <h6>Price Details</h6>
                             <dl class="row">
-
                                 <dt class="col-6 fw-normal">Order Total</dt>
-                                <dd class="col-6 text-end">$1100.00</dd>
+                                <dd class="col-6 text-end">৳ {{ props.checkoutData?.data?.cart_total_price }}</dd>
 
                                 <dt class="col-6 fw-normal">Delivery Charges</dt>
-                                <dd class="col-6 text-end"><s>$5.00</s> <span class="badge bg-label-success">Free</span></dd>
+                                <dd class="col-6 text-end">
+                                    ৳ {{ props.checkoutData?.data?.delivery_charge }}
+                                </dd>
 
                                 <hr>
 
                                 <dt class="col-6">Total</dt>
-                                <dd class="col-6 fw-semibold text-end mb-0">$1100.00</dd>
+                                <dd class="col-6 fw-semibold text-end mb-0">৳ {{ props.checkoutData?.data?.cart_total_price + props.checkoutData?.data?.delivery_charge }}</dd>
 
-                                <dt class="col-6">Deliver to:</dt>
-                                <dd class="col-6 fw-semibold text-end mb-0"><span class="badge bg-label-primary">Home</span></dd>
                             </dl>
-                            <!-- Address Details -->
-                            <address>
-                                <span class="fw-semibold"> John Doe (Default),</span><br>
-                                4135 Parkway Street, <br>
-                                Los Angeles, CA, 90017. <br>
-                                Mobile : +1 906 568 2332
-                            </address>
-                            <a href="javascript:void(0)">Change address</a>
                         </div>
                     </div>
                 </div>

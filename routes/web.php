@@ -8,6 +8,7 @@ use App\Http\Controllers\Panel\BrandController;
 use App\Http\Controllers\Panel\BusinessSettingController;
 use App\Http\Controllers\Panel\CategoryController;
 use App\Http\Controllers\Panel\DashboardController;
+use App\Http\Controllers\Panel\OrderController;
 use App\Http\Controllers\Panel\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
@@ -38,6 +39,7 @@ Route::middleware('customer')->group(function(){
 
     Route::get('/select-payment', [PaymentController::class, 'payment'])->name('payment');
     Route::post('/make-payment', [PaymentController::class, 'makePayment'])->name('makePayment');
+    Route::get('/make-payment', [PaymentController::class, 'orderComplete'])->name('orderComplete');
 });
 
 Route::prefix('customer')->name('customer.')->middleware( 'guest')->group(function (){
@@ -72,6 +74,11 @@ Route::prefix('panel')->name('admin.')->middleware(['auth','web', 'admin'])->gro
         Route::get('products', 'index')->name('index');
         Route::get('product/create', 'create')->name('create');
         Route::post('product/store', 'store')->name('store');
+    });
+
+    // customer orders
+    Route::controller(OrderController::class)->name('order.')->group(function(){
+        Route::get('/orders', 'index')->name('index');
     });
 
     Route::get('/settings', [BusinessSettingController::class, 'index'])->name('businessIndex');
