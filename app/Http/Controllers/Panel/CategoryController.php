@@ -19,8 +19,6 @@ class CategoryController extends Controller
     public function index()
     {
         return inertia('Category/Index', [
-
-
             'categories' => Category::query()
                 ->with('childrens')
                 ->withCount('childrens')

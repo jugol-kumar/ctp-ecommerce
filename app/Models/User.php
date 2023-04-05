@@ -20,9 +20,14 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $guarded = ['id'];
+
     protected $fillable = [
         'name',
         'email',
+        'phone',
+        'avatar',
         'password',
     ];
 
@@ -51,6 +56,10 @@ class User extends Authenticatable
     }
     public function addresses(){
         return $this->hasMany(Address::class, 'user_id');
+    }
+
+    public function orders(){
+        return $this->hasMany(Order::class);
     }
 
 
