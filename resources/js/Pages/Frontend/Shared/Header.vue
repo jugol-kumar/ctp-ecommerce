@@ -1,6 +1,7 @@
 
 <script setup>
     import DarkToggle from "../../../components/DarkToggle.vue";
+
     import CartItems from "../Modules/CartItems.vue";
     import WishList from "../Modules/WishList.vue";
     import UserInfo from "../Modules/UserInfo.vue";
@@ -11,6 +12,7 @@
     <nav class="header-navbar navbar navbar-expand-lg align-items-center navbar-light">
         <div class="container">
             <div class="navbar-container d-flex align-items-center justify-content-between">
+
                 <a href="/">
                     <img src="../../../../images/logo.png" height="40" alt="">
                 </a>
@@ -30,6 +32,7 @@
                         </li>
 
                         <li class="nav-item dropdown dropdown-cart me-25">
+
                             <CartItems/>
                         </li>
                         <li class="nav-item dropdown dropdown-cart me-25">

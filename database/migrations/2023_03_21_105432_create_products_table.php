@@ -55,6 +55,7 @@ return new class extends Migration
             $table->boolean('cod')->default(false);
 
             $table->integer('tax')->nullable()->default(0);
+
             $table->enum('tax_type', ['percentage', 'flat'])->nullable();
             $table->integer('vat')->nullable()->default(0);
             $table->enum('vat_type', ['percentage', 'flat'])->nullable();

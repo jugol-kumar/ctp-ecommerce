@@ -11,6 +11,7 @@
     import AdsSection from "./Modules/AdsSection.vue";
     import Layout from "./Shared/Layout.vue";
     const props = defineProps({
+
         featuredCategories:[]|null,
         featuredBrands:[]|null,
         homeCategory:[]|null,
@@ -53,6 +54,7 @@
 
         <div class="row match-height mb-2">
             <div class="col-md-2" v-for="brand in props.featuredBrands">
+
                 <a :href="`${$page.props.auth.MAIN_URL}/products?brand=${brand.slug}`">
                     <div class="card brand-card" v-c-tooltip="brand.name">
                         <div class="card-body">
@@ -63,7 +65,6 @@
             </div>
         </div>
 
-
         <div class="row match-height my-5" v-for="(category, index) in  props.homeCategory" :key="category.id">
             <h2 class="text-capitalize" v-if="category.products.length > 0" v-text="category.title"></h2>
             <product-carousel v-if="category.products.length > 0" :products="category.products"/>
@@ -71,22 +72,5 @@
     </section>
     </Layout>
 </template>
-
-<style>
-
-/*.carousel__item {*/
-/*    min-height: 400px;*/
-/*    width: 100%;*/
-/*    background-color: var(--vc-clr-primary);*/
-/*    color: var(--vc-clr-white);*/
-/*    font-size: 20px;*/
-/*    border-radius: 8px;*/
-/*}*/
-
-.carousel__item, .carousel__item img{
-    width: 100% !important;
-    height: 100% !important;
-}
-
 
 </style>

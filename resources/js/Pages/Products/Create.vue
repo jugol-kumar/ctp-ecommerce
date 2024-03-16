@@ -226,6 +226,7 @@ const cancelProducts = () => {
     }
 }
 
+
 </script>
 
 <template>
@@ -257,7 +258,6 @@ const cancelProducts = () => {
                         <div class="card-body">
                             <AnimInput label="Product Title" v-model="formData.productTitle"/>
                             <span class="text-danger" v-if="errors.productTitle" v-text="errors.productTitle"></span>
-
                             <div class="form-group mt-1">
                                 <label>Category</label>
                                 <vSelect :options="formattedParentCategories" v-model="formData.categoryId" label="label" placeholder="e.g Select Category">
@@ -625,5 +625,4 @@ const cancelProducts = () => {
 </template>
 
 <style>
-
 </style>

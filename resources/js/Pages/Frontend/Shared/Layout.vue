@@ -38,7 +38,6 @@ const sliders = ref({pagination:false, navigation:false,})
         </div>
     </div>
 
-
     <div class="bg-primary">
         <main-footer/>
     </div>

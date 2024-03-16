@@ -1,4 +1,5 @@
 <script setup>
+
 import {computed, ref, onMounted} from 'vue'
 import Layout from "../Shared/Layout.vue";
 import Gallery from "../Modules/Gallery.vue";
@@ -37,7 +38,6 @@ const watchlistStore = useWishListStore();
         images.push(props.product.thumbnail)
         return images;
     })
-
     const cartSize = ref(null);
     const selectSize = (event) => cartSize.value = event.target.value;
     const addToCart = (product) =>{
@@ -59,8 +59,6 @@ const watchlistStore = useWishListStore();
             $toast.warning("Please chose first your needed size...")
         }
     }
-
-
 
 </script>
 

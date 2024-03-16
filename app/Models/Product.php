@@ -21,6 +21,10 @@ class Product extends Model
     public function brand(){
         return $this->belongsTo(Brand::class);
     }
+    
+    public function active_color(){
+        return $this->belongsTo(ActiveColor::class, 'active_color_id');
+    }
 
 
     public function active_color(){

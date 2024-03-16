@@ -7,6 +7,7 @@
                 </div>
                 <div class="text-start p-1 zindex-1 match-height">
                     <h2>
+
                         <a class="text-primary" :href="`${$page.props.auth.MAIN_URL}/product/single-product/${item.slug}`">{{ item.title.slice(0, 28) }}</a>
                     </h2>
                     <h6 class="item-price">{{ item.price }} ৳</h6>
@@ -43,6 +44,7 @@
     })
     const settings = {itemsToShow: 1, snapAlign: 'center'}
     const breakpoints = {
+
         360: {
             itemsToShow: 2,
                 snapAlign: 'end',
