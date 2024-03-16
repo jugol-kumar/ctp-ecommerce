@@ -1,5 +1,6 @@
 import { createApp, h } from "vue";
 import { createInertiaApp, Link, Head } from "@inertiajs/inertia-vue3";
+import {createPinia} from "pinia";
 import { InertiaProgress } from "@inertiajs/progress";
 import VueFeather from 'vue-feather';
 import Layout from "./Shared/Layout.vue";
@@ -9,9 +10,6 @@ import { Alert, Button, Carousel, Collapse, Dropdown, Modal, Offcanvas, Popover,
 import {resolvePageComponent} from "laravel-vite-plugin/inertia-helpers";
 // import('../sass/app.scss')
 let vbPlugin = createVbPlugin({ Alert, Button, Carousel, Collapse, Dropdown, Modal, Offcanvas, Popover, ScrollSpy, Tab, Toast, Tooltip})
-
-
-
 
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
@@ -66,6 +64,7 @@ createInertiaApp({
             .use(coreUi)
             .use(store)
             .use(VueNotificationList)
+            .use(createPinia())
             .directive('tooltip', vctooltip)
             .component("Link", Link)
             .component("Head", Head)

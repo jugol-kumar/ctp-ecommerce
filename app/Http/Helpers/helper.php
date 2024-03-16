@@ -2,8 +2,10 @@
 
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use JetBrains\PhpStorm\ArrayShape;
+use App\Models\BusinessSetting;
 
 if (!function_exists("jsonResponse")){
     #[ArrayShape(["type" => "mixed|string", "status" => "int|mixed", "message" => "mixed|null", "data" => "array|mixed"])]
@@ -31,6 +33,54 @@ if (!function_exists("fileResize")){
             Log::error("errors" ,[
                 "error message"  => $e
             ]);
+        }
+    }
+}
+
+if (!function_exists('get_setting')) {
+    function get_setting($key, $default = null)
+    {
+        $setting = BusinessSetting::where('type', $key)->first();
+        return $setting == null ? $default : $setting->value;
+    }
+}
+
+
+if (!function_exists('global_asset')){
+    function global_asset($key=null){
+        if ($key != null){
+            $exists = Storage::disk('public')->has($key);
+            if ($exists){
+                if (config('app.env' == 'local')){
+                    $url = config('app.url') ?? 'http://127.0.0.1:800/'."storage/".$key;
+                }else{
+                    $url = config('app.url')."/storage/".$key;
+                }
+            }else{
+                $url = config("app.url")."/images/img-placeholder2.webp";
+            }
+        }else{
+            $url = config("app.url")."/images/img-placeholder2.webp";
+        }
+
+        return $url;
+    }
+}
+
+if (!function_exists('overWriteEnvFile')){
+    function overWriteEnvFile($type, $val)
+    {
+        $path = base_path('.env');
+        if (file_exists($path)) {
+            $val = '"'.trim($val).'"';
+            if(is_numeric(strpos(file_get_contents($path), $type)) && strpos(file_get_contents($path), $type) >= 0){
+                file_put_contents($path, str_replace(
+                    $type.'="'.env($type).'"', $type.'='.$val, file_get_contents($path)
+                ));
+            }
+            else{
+                file_put_contents($path, file_get_contents($path)."\r\n".$type.'='.$val);
+            }
         }
     }
 }

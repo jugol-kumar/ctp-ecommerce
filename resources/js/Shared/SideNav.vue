@@ -41,6 +41,16 @@
                         </Link>
                     </li>
 
+
+
+                    <li class=" nav-item">
+                        <Link preserve-scroll class="d-flex align-items-center" :href="`${this.$page.props.auth.ADMIN_URL}/users`">
+                            <vue-feather type="users" />
+                            <span class="menu-title text-truncate" data-i18n="Dashboards">Manage Users</span>
+                        </Link>
+                    </li>
+
+
                     <li class=" nav-item has-sub" :class="{'open' : clickMenu === 1}" @click.prevent="toggleSubMenu(1)">
                         <a preserve-scroll class="d-flex align-items-center">
                             <vue-feather type="users" />
@@ -78,7 +88,7 @@
 
                     <li class=" nav-item has-sub" :class="{'open' : clickMenu === 2}" @click.prevent="toggleSubMenu(2)">
                         <a preserve-scroll class="d-flex align-items-center">
-                            <vue-feather type="users" />
+                            <vue-feather type="codesandbox" />
                             <span class="menu-title text-truncate"
                                   data-i18n="Authentication">Products</span>
                         </a>
@@ -103,6 +113,21 @@
                             </li>
                         </ul>
                     </li>
+
+                    <li class=" nav-item">
+                        <Link preserve-scroll class="d-flex align-items-center" :href="`${this.$page.props.auth.ADMIN_URL}/orders`">
+                            <vue-feather type="shopping-cart" />
+                            <span class="menu-title text-truncate" data-i18n="Dashboards">Orders</span>
+                        </Link>
+                    </li>
+
+                    <li class=" nav-item">
+                        <Link preserve-scroll class="d-flex align-items-center" :href="`${this.$page.props.auth.ADMIN_URL}/settings`">
+                            <vue-feather type="settings" />
+                            <span class="menu-title text-truncate" data-i18n="Dashboards">Setting</span>
+                        </Link>
+                    </li>
+
                 </ul>
             </div>
         </perfect-scrollbar>

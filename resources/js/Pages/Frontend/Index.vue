@@ -2,6 +2,7 @@
     import TopHeader from "../Frontend/Shared/TopHeader.vue"
     import Header from "../Frontend/Shared/Header.vue"
     import HeaderMenu from "../Frontend/Shared/HeaderMenu.vue"
+
     import 'vue3-carousel/dist/carousel.css'
     import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
     import {ref} from 'vue'
@@ -10,10 +11,10 @@
     import AdsSection from "./Modules/AdsSection.vue";
     import Layout from "./Shared/Layout.vue";
     const props = defineProps({
-        parentCategories:[]|null,
+
         featuredCategories:[]|null,
-        topCategories:[]|null,
         featuredBrands:[]|null,
+        homeCategory:[]|null,
     })
 
     const sliders = ref({pagination:false, navigation:false,})
@@ -53,39 +54,23 @@
 
         <div class="row match-height mb-2">
             <div class="col-md-2" v-for="brand in props.featuredBrands">
-                <div class="card brand-card" v-c-tooltip="brand.name">
-                    <div class="card-body">
-                        <img :src="brand.icon" class="card-img-top" alt="">
+
+                <a :href="`${$page.props.auth.MAIN_URL}/products?brand=${brand.slug}`">
+                    <div class="card brand-card" v-c-tooltip="brand.name">
+                        <div class="card-body">
+                            <img :src="brand.icon" class="card-img-top" alt="">
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
 
-
-        <div class="row match-height my-5" v-for="(category, index) in  props.topCategories" :key="category.id">
-            <AdsSection v-if="index % 2 !== 0"/>
-
+        <div class="row match-height my-5" v-for="(category, index) in  props.homeCategory" :key="category.id">
             <h2 class="text-capitalize" v-if="category.products.length > 0" v-text="category.title"></h2>
             <product-carousel v-if="category.products.length > 0" :products="category.products"/>
         </div>
     </section>
     </Layout>
 </template>
-
-<style scoped>
-
-/*.carousel__item {*/
-/*    min-height: 400px;*/
-/*    width: 100%;*/
-/*    background-color: var(--vc-clr-primary);*/
-/*    color: var(--vc-clr-white);*/
-/*    font-size: 20px;*/
-/*    border-radius: 8px;*/
-/*}*/
-
-/*.carousel__item img{*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*}*/
 
 </style>

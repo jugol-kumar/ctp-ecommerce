@@ -26,6 +26,11 @@ class Product extends Model
         return $this->belongsTo(ActiveColor::class, 'active_color_id');
     }
 
+
+    public function active_color(){
+        return $this->belongsTo(ActiveColor::class, 'active_color_id');
+    }
+
     public function user(){
         return $this->belongsTo(User::class);
     }
@@ -42,6 +47,5 @@ class Product extends Model
             get: fn ($value) => $value ? Storage::url($value) : asset('img/logo.png'),
         );
     }
-    
 
 }

@@ -19,9 +19,6 @@ const gridList = (e) => {
     $gridCont.classList.remove('list-view');
 }
 
-
-
-
 </script>
 
 <template>

@@ -39,7 +39,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'auth' => Auth::check() ? [
-                'user' => Auth::user(),
+                'user' => Auth::user()->load('addresses'),
                 'MAIN_URL' => config('app.url'),
                 'ADMIN_URL' => config('app.url')."/panel",
                 'APP_NAME' => config('app.name')
